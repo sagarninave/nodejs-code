@@ -4,6 +4,34 @@ const {userConstants} = require('../constants/message');
 const { param } = require('../routes/user.route');
 const User = require('../schema/user.schema');
 
+exports.checkuserexists = (req, res, next) => {
+
+  User.find({email: req.params.email})
+  .exec()
+  .then(result => {
+    if(result.length >= 1){
+      let response = {
+        status : errorMessage.status,
+        message: userConstants.USER_EXISTS
+      }
+      return res.status(httpStatus.success).json(response);
+    }
+    else{
+      let response = {
+        status : successMessage.status,
+        message: userConstants.USER_NOTE_EXISTS
+      }
+      return res.status(httpStatus.success).json(response);
+    }
+  })
+  .catch(error => {
+    let errorResponse = {
+      error: error
+    };
+    res.status(httpStatus.internalServerError).json(errorResponse); 
+  });
+};
+
 exports.signup = (req, res, next) => {
   
   User.find({email:req.body.email})

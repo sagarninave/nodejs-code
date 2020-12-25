@@ -66,6 +66,52 @@
           }
         }
       }
+    },
+    "/api/user/checkuserexists/{email}": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Check user exists",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "email",
+            "description": "Check user exists",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Authorization failed"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "408": {
+            "description": "Request Timeout"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "504": {
+            "description": "Gateway Timeout"
+          }
+        }
+      }
     }
   },
   "definitions": {
