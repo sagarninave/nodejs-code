@@ -4,6 +4,7 @@ const successMessage = {
 
 const errorMessage = { 
   status: 'failed',
+  somethingWentWrong: 'something went wrong',
 };
 
 const httpStatus = {

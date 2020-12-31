@@ -46,23 +46,8 @@
           "200": {
             "description": "The request is OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Authorization failed"
-          },
           "404": {
             "description": "Not Found"
-          },
-          "408": {
-            "description": "Request Timeout"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          },
-          "504": {
-            "description": "Gateway Timeout"
           }
         }
       }
@@ -92,23 +77,102 @@
           "200": {
             "description": "The request is OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Authorization failed"
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/sendemailverificationcode/{userId}": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Email verification code send",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "Email verification code send",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
           },
           "404": {
             "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/resendemailverificationcode/{userId}": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Resend mail verification code",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "Resend mail verification code",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
           },
-          "408": {
-            "description": "Request Timeout"
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/verifyemail": {
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Email verification",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Verify Email",
+            "schema": {
+              "$ref": "#/definitions/verifyemail"
+            }
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
           },
-          "500": {
-            "description": "Internal Server Error"
-          },
-          "504": {
-            "description": "Gateway Timeout"
+          "404": {
+            "description": "Not Found"
           }
         }
       }
@@ -158,6 +222,22 @@
         "created": {
           "type": "string",
           "example": "2020-12-23"
+        }
+      }
+    },
+    "verifyemail": {
+      "required": [
+        "code",
+        "user"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "example": "5fee03668d54821810ec56db"
+        },
+        "user": {
+          "type": "string",
+          "example": "5fe772faeae14b27985ab0da"
         }
       }
     }
