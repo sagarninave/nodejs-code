@@ -12,7 +12,7 @@ const userRoute = require('./routes/user.route');
 mongoose.connect(dbConfig.mongoDBURL, dbConfig.mongoDBParams);
 
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./constants/swagger.json');
+const swaggerDocument = require('./config/swagger.json');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(morgan('dev'));

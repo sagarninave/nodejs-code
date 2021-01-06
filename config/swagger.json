@@ -145,20 +145,26 @@
         }
       }
     },
-    "/api/user/verifyemail": {
-      "post": {
+    "/api/user/verifyemail/{code}/{user}": {
+      "get": {
         "tags": [
           "User Management"
         ],
         "description": "Email verification",
         "parameters": [
           {
-            "in": "body",
-            "name": "body",
-            "description": "Verify Email",
-            "schema": {
-              "$ref": "#/definitions/verifyemail"
-            }
+            "in": "path",
+            "name": "code",
+            "description": "Email verification code",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "user",
+            "description": "User id for verification code",
+            "required": true,
+            "type": "string"
           }
         ],
         "consumes": [
@@ -222,22 +228,6 @@
         "created": {
           "type": "string",
           "example": "2020-12-23"
-        }
-      }
-    },
-    "verifyemail": {
-      "required": [
-        "code",
-        "user"
-      ],
-      "properties": {
-        "code": {
-          "type": "string",
-          "example": "5fee03668d54821810ec56db"
-        },
-        "user": {
-          "type": "string",
-          "example": "5fe772faeae14b27985ab0da"
         }
       }
     }

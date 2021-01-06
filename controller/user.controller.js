@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const {successMessage, errorMessage, httpStatus} = require('../constants/httpresponse');
 const {userConstants} = require('../constants/message');
-var passwordHash = require('password-hash');
+const {transporter, mailOptions} = require('../config/email');
+const jwt = require('jsonwebtoken');
+
 const User = require('../schema/user.schema');
 const VerificationCode = require('../schema/verificationcode.schema');
 
@@ -102,9 +104,10 @@ exports.sendemailverificationcode = (req, res, next) => {
           res.status(httpStatus.success).json(response);
         }
         else{
+          const new_code = new mongoose.Types.ObjectId();
           const verification_code = new VerificationCode({
             _id: new mongoose.Types.ObjectId(),
-            code: new mongoose.Types.ObjectId(),
+            code: new_code,
             user: req.params.userId,
           });
           verification_code.save()
@@ -115,6 +118,34 @@ exports.sendemailverificationcode = (req, res, next) => {
                 message: userConstants.VERIFICATION_CODE_SEND,
                 verification_code_send: true
               };
+              // https://qcassets.s3.amazonaws.com/quality-Counts-form_logo.png
+
+              let link = `http://localhost:8000/api/user/verifyemail/${new_code}/${req.params.userId}`
+              mailOptions.to = "sagar.ninave@konverge.ai";
+              mailOptions.html = `<html>
+              <body>
+                <div style="border: 1px solid black; width: max-content";">
+                  <center> 
+                    <img src="https://gajavakraganesh.web.app/assets/images/shortcutIcon.png" style="width:100px; height:auto;margin-top: 2%;"/>
+                  </center>
+                  <div style="margin: 8px;">
+                    <p>Welcome to Ganaraj!</p>
+                    <p>An account for Ganaraj was created for this email address.  If this is correct, you can verify your email by clicking below link <br/> 
+                      <a href="${link}"> Verify Email </a>
+                    </p>
+                    <p>If you did not sign up for this account, you can let us know by contacting <br/>sagarninave@gmail.com.</p>
+                    <p style="font-weight:bolder">GANARAJ</p>
+                  </div>
+                </div>        
+              </body>
+            </html>`
+              transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+              }); 
               res.status(httpStatus.success).json(response);
             }
           })
@@ -132,8 +163,8 @@ exports.sendemailverificationcode = (req, res, next) => {
 
 exports.verifyemail = (req, res, next) => {
 
-  let codeBody = req.body.code;
-  let userBody = req.body.user;
+  let codeBody = req.params.code;
+  let userBody = req.params.user;
 
   VerificationCode.findOne({user: userBody})
   .exec()

@@ -7,6 +7,6 @@ router.get("/checkuserexists/:email", userController.checkuserexists);
 router.post("/signup", userController.signup);
 router.get("/sendemailverificationcode/:userId", userController.sendemailverificationcode);
 router.get("/resendemailverificationcode/:userId", userController.resendemailverificationcode);
-router.post("/verifyemail", userController.verifyemail);
+router.get("/verifyemail/:code/:user", userController.verifyemail);
 
 module.exports = router;
