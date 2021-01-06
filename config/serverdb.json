@@ -1,4 +1,0 @@
-{
-  "mongoDBURL":"mongodb+srv://adminuser:adminpassword@cluster0.wzs7f.mongodb.net/Cluster0?retryWrites=true&w=majority",
-  "mongoDBParams": {"useNewUrlParser": true, "useUnifiedTopology": true}
-}

@@ -4,12 +4,12 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
-const dbConfig = require('./config/localdb');
-// const dbConfig = require('./config/serverdb');
+const db = require('./config/db');
 
 const userRoute = require('./routes/user.route');
 
-mongoose.connect(dbConfig.mongoDBURL, dbConfig.mongoDBParams);
+// mongoose.connect(db.server.mongoDBURL, db.server.mongoDBParams);
+mongoose.connect(db.local.mongoDBURL, db.local.mongoDBParams);
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./config/swagger.json');
@@ -21,12 +21,9 @@ app.use(bodyParser.json());
 app.options('*', cors());
 app.use(cors())
 
-// CORS headers
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, x-access-token");
-
-  // Handle preflight OPTIONS request
   if (req.method === 'OPTIONS') {
     res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
     return res.status(200).json({});
