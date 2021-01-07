@@ -7,7 +7,8 @@ const userConstants = {
   VERIFICATION_CODE_RESEND: "verification code resend",
   EMAIL_VERIFIED: "email verified successfully",
   EMAIL_ALREADY_VERIFIED: "email already verified",
-  EMAIL_VERIFICATION_FAILED: "email verification failed"
+  EMAIL_VERIFICATION_FAILED: "email verification failed",
+  LOGIN: "user login successfully"
 };
 
 module.exports = {
