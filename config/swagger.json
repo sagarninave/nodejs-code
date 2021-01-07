@@ -182,6 +182,38 @@
           }
         }
       }
+    },
+    "/api/user/login": {
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Login user",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Login user",
+            "schema": {
+              "$ref": "#/definitions/login"
+            }
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -228,6 +260,22 @@
         "created": {
           "type": "string",
           "example": "2020-12-23"
+        }
+      }
+    },
+    "login": {
+      "required": [
+        "email",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "sagarninave@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "Password@123"
         }
       }
     }

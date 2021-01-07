@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const {successMessage, errorMessage, httpStatus} = require('../constants/httpresponse');
 const {userConstants} = require('../constants/message');
 const {mailOptions, emailTemplate, sendEmail} = require('../config/email');
+const passwordHash = require('password-hash');
+const jwt = require('jsonwebtoken');
 
 const User = require('../schema/user.schema');
 const VerificationCode = require('../schema/verificationcode.schema');
@@ -221,4 +223,48 @@ exports.resendemailverificationcode = (req, res, next) => {
       });
     }
   })
+};
+
+exports.login = (req, res, next) => {
+  
+  let userEmail = req.body.email;
+  let userPassword = req.body.password;
+  
+  User.findOne({email:userEmail})
+  .exec()
+  .then(result => {
+    if(result){
+      let isAuthenticated = passwordHash.verify(userPassword, result.password);
+      if(isAuthenticated){
+        let user = {
+          id:result._id,
+          first_name:result.first_name,
+          last_name:result.last_name,
+          email:result.email,
+        }
+        let accessToken = jwt.sign(user,"access", {expiresIn:"1d"});
+        let refreshToken = jwt.sign(user,"refresh", {expiresIn:"7d"});
+        let response = {
+          status : successMessage.status,
+          message: userConstants.LOGIN,
+          access_token: accessToken,
+          refresh_token: refreshToken
+        };
+        return res.status(httpStatus.success).json(response);
+      }
+    }
+    else{
+      let response = {
+        status : errorMessage.status,
+        message: userConstants.USER_NOT_EXISTS
+      }
+      return res.status(httpStatus.success).json(response);
+    }
+  })
+  .catch(error => {
+    let errorResponse = {
+      error: errorMessage.somethingWentWrong
+    };
+    res.status(httpStatus.internalServerError).json(errorResponse); 
+  });
 };
