@@ -15,15 +15,15 @@ exports.checkuserexists = (req, res, next) => {
   .then(result => {
     if(result.length >= 1){
       let response = {
-        status : errorMessage.status,
+        status : successMessage.status,
         message: userConstants.USER_EXISTS
       }
       return res.status(httpStatus.success).json(response);
     }
     else{
       let response = {
-        status : successMessage.status,
-        message: userConstants.USER_NOTE_EXISTS
+        status : errorMessage.status,
+        message: userConstants.USER_NOT_EXISTS
       }
       return res.status(httpStatus.success).json(response);
     }
@@ -115,7 +115,7 @@ exports.sendemailverificationcode = (req, res, next) => {
           .then(result => {
             if(result){
               let link = `http://localhost:8000/api/user/verifyemail/${new_code}/${req.params.userId}`
-              mailOptions.to = "sagarninave@gmail.com";
+              mailOptions.to = "sagar@yopmail.com";
               mailOptions.html = emailTemplate(link)
               sendEmail(mailOptions);
 
