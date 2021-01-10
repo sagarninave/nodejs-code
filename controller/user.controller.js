@@ -15,15 +15,15 @@ exports.checkuserexists = (req, res, next) => {
   .then(result => {
     if(result.length >= 1){
       let response = {
-        status : errorMessage.status,
+        status : successMessage.status,
         message: userConstants.USER_EXISTS
       }
       return res.status(httpStatus.success).json(response);
     }
     else{
       let response = {
-        status : successMessage.status,
-        message: userConstants.USER_NOTE_EXISTS
+        status : errorMessage.status,
+        message: userConstants.USER_NOT_EXISTS
       }
       return res.status(httpStatus.success).json(response);
     }
@@ -167,8 +167,8 @@ exports.login = (req, res, next) => {
           email:result.email,
           role:result.role,
         }
-        let accessToken = jwt.sign(user,"access", {expiresIn:"1d"});
-        let refreshToken = jwt.sign(user,"refresh", {expiresIn:"7d"});
+        let accessToken = jwt.sign(user,"access", {expiresIn:"7d"});
+        let refreshToken = jwt.sign(user,"refresh", {expiresIn:"30d"});
         let response = {
           status : successMessage.status,
           message: userConstants.LOGIN,
@@ -225,7 +225,7 @@ exports.forgetpassword = (req, res, next) => {
       })
       .catch(error => {
         let errorResponse = {
-          error: errorMessage.somethingWentWrong + 1
+          error: errorMessage.somethingWentWrong
         };
         res.status(httpStatus.internalServerError).json(errorResponse); 
       });
