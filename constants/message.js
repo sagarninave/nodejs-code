@@ -8,7 +8,8 @@ const userConstants = {
   EMAIL_VERIFIED: "email verified successfully",
   EMAIL_ALREADY_VERIFIED: "email already verified",
   EMAIL_VERIFICATION_FAILED: "email verification failed",
-  LOGIN: "user login successfully"
+  LOGIN: "user login successfully",
+  FORGET_PASSWORD: "forget password email has been send"
 };
 
 module.exports = {
