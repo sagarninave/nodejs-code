@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const {successMessage, errorMessage, httpStatus} = require('../constants/httpresponse');
 const {userConstants} = require('../constants/message');
-const {mailOptions, emailTemplate, forgetPasswordTemplate, sendEmail} = require('../config/email');
+const {mailOptions, emailTemplate, forgetPasswordTemplate, sendEmail, recentLoginTemplate} = require('../config/email');
 const passwordHash = require('password-hash');
 const jwt = require('jsonwebtoken');
 
@@ -175,6 +175,23 @@ exports.login = (req, res, next) => {
           access_token: accessToken,
           refresh_token: refreshToken
         };
+        let emailData = {
+          time: new Date(),
+          ip: '120.21.334.332',
+          location: "New Delhi, India",
+          system: "Sagar'sPC"
+        }
+        mailOptions.subject = "Recent Login"
+        mailOptions.to = result.email;
+        mailOptions.html = recentLoginTemplate(emailData)
+        sendEmail(mailOptions);
+        return res.status(httpStatus.success).json(response);
+      }
+      else{
+        let response = {
+          status : errorMessage.status,
+          message: userConstants.WRONG_PASSWORD
+        }
         return res.status(httpStatus.success).json(response);
       }
     }
@@ -202,38 +219,52 @@ exports.forgetpassword = (req, res, next) => {
   .exec()
   .then(result => {
     if(result){
-      const new_code = new mongoose.Types.ObjectId();
-      const forgetPassword = new forgetPasswordSchema({
-        _id: new mongoose.Types.ObjectId(),
-        code: new_code,
-        email: useremail,
-      });
-      forgetPassword.save()
+      forgetPasswordSchema.findOne({email:result.email})
+      .exec()
       .then(result => {
         if(result){
-          let link = `http://localhost:8000/api/user/setnewpassword/${useremail}/${new_code}`
-          mailOptions.subject = "Forget Password";
-          mailOptions.to = useremail;
-          mailOptions.html = forgetPasswordTemplate(link);
-          sendEmail(mailOptions);
           let response = {
             status:successMessage.status,
-            message: userConstants.FORGET_PASSWORD,
+            message: userConstants.FORGET_PASSWORD_LINK_ALREADY_SEND,
+            password_reset_link_already_send: true,
           };
           res.status(httpStatus.success).json(response);
         }
+        else{
+          const new_code = new mongoose.Types.ObjectId();
+          const forgetPassword = new forgetPasswordSchema({
+            _id: new mongoose.Types.ObjectId(),
+            code: new_code,
+            email: useremail,
+          });
+          forgetPassword.save()
+          .then(result => {
+            if(result){
+              let link = `http://localhost:8000/api/user/setnewpassword/${useremail}/${new_code}`
+              mailOptions.subject = "Forget Password";
+              mailOptions.to = useremail;
+              mailOptions.html = forgetPasswordTemplate(link);
+              sendEmail(mailOptions);
+              let response = {
+                status:successMessage.status,
+                message: userConstants.FORGET_PASSWORD,
+              };
+              res.status(httpStatus.success).json(response);
+            }
+          })
+          .catch(error => {
+            let errorResponse = {
+              error: errorMessage.somethingWentWrong
+            };
+            res.status(httpStatus.internalServerError).json(errorResponse); 
+          });
+        }
       })
-      .catch(error => {
-        let errorResponse = {
-          error: errorMessage.somethingWentWrong
-        };
-        res.status(httpStatus.internalServerError).json(errorResponse); 
-      });
     }
     else{    
       let response = {
         status : errorMessage.status,
-        message: userConstants.USER_NOT_EXISTS
+        message: userConstants.FORGET_PASSWORD_FAILED
       }
       return res.status(httpStatus.success).json(response);
     }
@@ -246,48 +277,118 @@ exports.forgetpassword = (req, res, next) => {
   });
 };
 
+exports.setnewpassword = (req, res, next) => {
 
-// exports.forgetpass2 = (req, res, next) => {
+  let user_code = req.body.code;
+  let user_email = req.body.email;
+  let user_password = req.body.password;
 
-//   let codeBody = req.params.code;
-//   let emailbody = req.params.email;
+  forgetPasswordSchema.findOne({email: user_email})
+  .exec()
+  .then(result => {
+    if(result){
+      let codeResult = result.code;
+      let emailResult = result.email;
+      if(codeResult==user_code && emailResult==user_email){
+        User.findOne({email:user_email})
+        .then(result => {
+          if(result){
+            let new_password = {password: passwordHash.generate(user_password)}
+            return User.updateOne({_id:result._id}, {$set: new_password})
+          }
+        })
+        .then(result => {
+          if(result){
+            let response = {
+              status : successMessage.status,
+              message: userConstants.PASSWORD_CHANGED
+            }
+            res.status(httpStatus.success).json(response);
+          }
+        })
+        .catch(error => {
+          let errorResponse = {
+            status:errorMessage.error,
+            message: userConstants.PASSWORD_CHANGED_FAILED
+          };
+          res.status(200).json(errorResponse);
+        });
+      }
+      else{
+        let response = {
+          status : errorMessage.status,
+          message: userConstants.FORGET_PASSWORD_CODE_MISMATCH
+        }
+        res.status(httpStatus.success).json(response);
+      }
+    }
+    else{
+      let response = {
+        status : errorMessage.status,
+        message: userConstants.FORGET_PASSWORD_LINK_RESEND
+      }
+      res.status(httpStatus.success).json(response);
+    }
+  })
+  .catch(error => {
+    let errorResponse = {
+      error: errorMessage.somethingWentWrong
+    };
+    res.status(200).json(errorResponse);
+  })
+};
 
-//   forgetPasswordSchema.findOne({email: emailBody})
-//   .exec()
-//   .then(result => {
-//     if(result){
-//       let codeResult = result.code;
-//       let emailResult = result.email;
-//       if(codeResult==codeBody && emailResult==emailBody){
-//         User.findById(userBody)
-//         .then(result => {
-//           if(result){
-//             return User.updateOne({_id:userBody}, {$set: {verified: true}})
-//           }
-//         })
-//         .then(result => {
-//           if(result){
-//             let response = {
-//               status : successMessage.status,
-//               message: userConstants.EMAIL_VERIFIED
-//             }
-//             res.status(httpStatus.success).json(response);
-//           }
-//         })
-//         .catch(error => {
-//           let errorResponse = {
-//             status:errorMessage.error,
-//             message: userConstants.EMAIL_VERIFICATION_FAILED
-//           };
-//           res.status(200).json(errorResponse);
-//         });
-//       }
-//     }
-//   })
-//   .catch(error => {
-//     let errorResponse = {
-//       error: errorMessage.somethingWentWrong
-//     };
-//     res.status(200).json(errorResponse);
-//   })
-// };
+exports.changepassword = (req, res, next) => {
+
+  let email = req.body.email;
+  let old_password = req.body.old_password;
+  let new_password = req.body.new_password;
+  let confirm_password = req.body.confirm_password;
+
+  User.findOne({email:email})
+  .then(result => {
+    if(result){
+      let isAuthenticated = passwordHash.verify(old_password, result.password);
+      if(isAuthenticated){
+        if(new_password === confirm_password){
+          let set_password = {password: passwordHash.generate(new_password)}
+          return User.updateOne({email:email}, {$set: set_password})
+        }
+        else{
+          let response = {
+            status : errorMessage.status,
+            message: userConstants.PASSWORD_NOT_MATCHED
+          }
+          res.status(httpStatus.success).json(response);
+        }
+      }
+      else{
+        let response = {
+          status : errorMessage.status,
+          message: userConstants.OLD_PASSWORD_MISMATCH
+        }
+        res.status(httpStatus.success).json(response);
+      }
+    }
+    else{
+      let response = {
+        status : errorMessage.status,
+        message: userConstants.USER_NOT_EXISTS
+      }
+      res.status(httpStatus.success).json(response);
+    }
+  })
+  .then(result => {
+    let response = {
+      status : successMessage.status,
+      message: userConstants.PASSWORD_CHANGED
+    }
+    res.status(httpStatus.success).json(response);
+  })
+  .catch(error => {
+    let errorResponse = {
+      error: errorMessage.somethingWentWrong
+    };
+    res.status(200).json(errorResponse);
+  })
+};

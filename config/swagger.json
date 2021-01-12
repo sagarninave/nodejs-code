@@ -207,6 +207,38 @@
           }
         }
       }
+    },
+    "/api/user/setnewpassword": {
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Setting new password by forget password link",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Set new password",
+            "schema": {
+              "$ref": "#/definitions/setnewpassword"
+            }
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -265,6 +297,27 @@
         "email": {
           "type": "string",
           "example": "sagarninave@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "Password@123"
+        }
+      }
+    },
+    "setnewpassword": {
+      "required": [
+        "email",
+        "code",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "sagarninave@gmail.com"
+        },
+        "code": {
+          "type": "string",
+          "example": "5ff8835a3238ab43d48f3214"
         },
         "password": {
           "type": "string",

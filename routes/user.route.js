@@ -9,5 +9,7 @@ router.get("/sendemailverificationcode/:userId", userController.sendemailverific
 router.get("/verifyemail/:userId", userController.verifyemail);
 router.post("/login", userController.login);
 router.get("/forgetpassword/:email", userController.forgetpassword);
+router.post("/setnewpassword", userController.setnewpassword);
+router.post("/changepassword", userController.changepassword);
 
 module.exports = router;

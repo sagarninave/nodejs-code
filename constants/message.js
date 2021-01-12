@@ -9,7 +9,16 @@ const userConstants = {
   EMAIL_ALREADY_VERIFIED: "email already verified",
   EMAIL_VERIFICATION_FAILED: "email verification failed",
   LOGIN: "user login successfully",
-  FORGET_PASSWORD: "forget password email has been send"
+  WRONG_PASSWORD: "password does not match",
+  FORGET_PASSWORD: "forget password link has been send",
+  FORGET_PASSWORD_LINK_ALREADY_SEND: "forget password link has been send already",
+  FORGET_PASSWORD_LINK_RESEND: "send forget password link again",
+  FORGET_PASSWORD_FAILED: "forget password link send failed",
+  FORGET_PASSWORD_CODE_MISMATCH: "forget password code is mismatch",
+  PASSWORD_CHANGED: "password has been changed successfully",
+  PASSWORD_CHANGED_FAILED: "password change has been failed",
+  PASSWORD_NOT_MATCHED: "password and confirm password should match",
+  OLD_PASSWORD_MISMATCH: "old password is not matched with new password"
 };
 
 module.exports = {
