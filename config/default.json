@@ -1,12 +1,13 @@
 {
   "MongoDB": {
-      "user": "",
-      "password": "",
-      "host": "localhost",
-      "port": 27017,
-      "dbName": "ganaraj"
-  },"Jwt": {
-      "secretKey": "7d88b6aeab988034d37ed740dba72de9",
-      "expiresIn": "30d"
+    "user": "",
+    "password": "",
+    "host": "localhost",
+    "port": 27017,
+    "dbName": "ganaraj"
+  },
+  "Jwt": {
+    "secretKey": "7d88b6aeab988034d37ed740dba72de9",
+    "expiresIn": "30d"
   }
 }

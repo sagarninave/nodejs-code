@@ -114,38 +114,7 @@
         }
       }
     },
-    "/api/user/resendemailverificationcode/{userId}": {
-      "get": {
-        "tags": [
-          "User Management"
-        ],
-        "description": "Resend mail verification code",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userId",
-            "description": "Resend mail verification code",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "The request is OK"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/api/user/verifyemail/{code}/{user}": {
+    "/api/user/verifyemail/{userId}": {
       "get": {
         "tags": [
           "User Management"
@@ -154,14 +123,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "code",
-            "description": "Email verification code",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "path",
-            "name": "user",
+            "name": "userId",
             "description": "User id for verification code",
             "required": true,
             "type": "string"
@@ -196,6 +158,69 @@
             "description": "Login user",
             "schema": {
               "$ref": "#/definitions/login"
+            }
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/forgetpassword/{email}": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Send forget password link through email to set new password to user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "email",
+            "description": "Email for forget password",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/setnewpassword": {
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Setting new password by forget password link",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Set new password",
+            "schema": {
+              "$ref": "#/definitions/setnewpassword"
             }
           }
         ],
@@ -272,6 +297,27 @@
         "email": {
           "type": "string",
           "example": "sagarninave@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "Password@123"
+        }
+      }
+    },
+    "setnewpassword": {
+      "required": [
+        "email",
+        "code",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "sagarninave@gmail.com"
+        },
+        "code": {
+          "type": "string",
+          "example": "5ff8835a3238ab43d48f3214"
         },
         "password": {
           "type": "string",
