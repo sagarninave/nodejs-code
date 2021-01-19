@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 const {successMessage, errorMessage, httpStatus} = require('../constants/httpresponse');
 const {userConstants} = require('../constants/message');
-const {mailOptions, emailTemplate, forgetPasswordTemplate, sendEmail, recentLoginTemplate} = require('../config/email');
+
+const { mailOptions, sendEmail} = require('../email/emailConfig');
+const emailTemplate = require('../email/emailTemplate');
+
 const passwordHash = require('password-hash');
 const jwt = require('jsonwebtoken');
 
@@ -11,12 +14,14 @@ const forgetPasswordSchema = require('../schema/forgetpassword.schema');
 exports.checkuserexists = (req, res, next) => {
 
   User.find({email: req.params.email})
+  .select('first_name last_name email phone verified role')
   .exec()
   .then(result => {
     if(result.length >= 1){
       let response = {
         status : successMessage.status,
-        message: userConstants.USER_EXISTS
+        message: userConstants.USER_EXISTS,
+        data: result
       }
       return res.status(httpStatus.success).json(response);
     }
@@ -38,6 +43,14 @@ exports.checkuserexists = (req, res, next) => {
 
 exports.signup = (req, res, next) => {
   
+  let userId = new mongoose.Types.ObjectId();
+  let first_name = req.body.first_name;
+  let last_name = req.body.last_name;
+  let email = req.body.email;
+  let username = req.body.username;
+  let password = passwordHash.generate(req.body.password);
+  let phone = req.body.phone;
+
   User.find({email:req.body.email})
   .exec()
   .then(result => {
@@ -50,18 +63,25 @@ exports.signup = (req, res, next) => {
     }
     else{
       const user = new User({
-        _id: new mongoose.Types.ObjectId(),
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        email: req.body.email,
-        username: req.body.username,
-        password: passwordHash.generate(req.body.password),
-        phone: req.body.phone
+        _id: userId,
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        username: username,
+        password: password,
+        phone: phone
       });
     
       user.save()
       .then(result => {
         if(result){
+          
+          let link = `http://localhost:8000/api/user/verifyemail/${userId}`
+          mailOptions.subject = "Email Verification"
+          mailOptions.to = email;
+          mailOptions.html = emailTemplate.emailVerificationTemplate(link)
+          sendEmail(mailOptions);
+          
           let response = {
             status:successMessage.status,
             message: userConstants.USER_REGISTERATION,
@@ -80,41 +100,42 @@ exports.signup = (req, res, next) => {
   })
 };
 
-exports.sendemailverificationcode = (req, res, next) => {
+// exports.sendemailverificationcode = (req, res, next) => {
 
-  let userId = req.params.userId;
+//   let userId = req.params.userId;
 
-  User.findById(userId)
-  .exec()
-  .then(result => {
-    if(result){
-      let link = `http://localhost:8000/api/user/verifyemail/${userId}`
-      mailOptions.subject = "Email Verification"
-      mailOptions.to = result.email;
-      mailOptions.html = emailVerificationTemplate(link)
-      sendEmail(mailOptions);
-      let response = {
-        status:successMessage.status,
-        message: userConstants.VERIFICATION_CODE_SEND,
-        verification_code_send: true
-      };
-      res.status(httpStatus.success).json(response);
-    }
-    else{    
-      let response = {
-        status : errorMessage.status,
-        message: userConstants.USER_NOT_EXISTS
-      }
-      return res.status(httpStatus.success).json(response);
-    }      
-  })
-  .catch(error => {
-    let errorResponse = {
-      error: errorMessage.somethingWentWrong
-    };
-    res.status(httpStatus.internalServerError).json(errorResponse); 
-  });
-};
+//   User.findById(userId)
+//   .exec()
+//   .then(result => {
+//     console.log(result)
+//     if(result){
+//       let link = `http://localhost:8000/api/user/verifyemail/${userId}`
+//       mailOptions.subject = "Email Verification"
+//       mailOptions.to = result.email;
+//       mailOptions.html = emailTemplate.emailVerificationTemplate(link)
+//       sendEmail(mailOptions);
+//       let response = {
+//         status:successMessage.status,
+//         message: userConstants.VERIFICATION_CODE_SEND,
+//         verification_code_send: true
+//       };
+//       res.status(httpStatus.success).json(response);
+//     }
+//     else{    
+//       let response = {
+//         status : errorMessage.status,
+//         message: userConstants.USER_NOT_EXISTS
+//       }
+//       return res.status(httpStatus.success).json(response);
+//     }      
+//   })
+//   .catch(error => {
+//     let errorResponse = {
+//       error: errorMessage.somethingWentWrong
+//     };
+//     res.status(httpStatus.internalServerError).json(errorResponse); 
+//   });
+// };
 
 exports.verifyemail = (req, res, next) => {
 
@@ -175,16 +196,7 @@ exports.login = (req, res, next) => {
           access_token: accessToken,
           refresh_token: refreshToken
         };
-        let emailData = {
-          time: new Date(),
-          ip: '120.21.334.332',
-          location: "New Delhi, India",
-          system: "Sagar'sPC"
-        }
-        mailOptions.subject = "Recent Login"
-        mailOptions.to = result.email;
-        mailOptions.html = recentLoginTemplate(emailData)
-        sendEmail(mailOptions);
+        
         return res.status(httpStatus.success).json(response);
       }
       else{
@@ -210,6 +222,26 @@ exports.login = (req, res, next) => {
     res.status(httpStatus.internalServerError).json(errorResponse); 
   });
 };
+
+exports.recentloginemailsend = (req, res, next) => {
+  let email = "sagarninave@gmail.com";
+  let emailData = {
+    time: new Date(),
+    ip: '120.21.334.332',
+    location: "New Delhi, India",
+    system: "Sagar'sPC"
+  }
+  mailOptions.subject = "Recent Login"
+  mailOptions.to = email;
+  mailOptions.html = emailTemplate.recentLoginTemplate(emailData)
+  sendEmail(mailOptions);
+  
+  let response = {
+    status : successMessage.status,
+    message: userConstants.LOGIN_EMAIL_SEND
+  }
+  return res.status(httpStatus.success).json(response);
+}
 
 exports.forgetpassword = (req, res, next) => {
 
@@ -240,10 +272,10 @@ exports.forgetpassword = (req, res, next) => {
           forgetPassword.save()
           .then(result => {
             if(result){
-              let link = `http://localhost:8000/api/user/setnewpassword/${useremail}/${new_code}`
+              let link = `https://gajavakraganesh.web.app/setnewpassword/${useremail}/${new_code}`
               mailOptions.subject = "Forget Password";
               mailOptions.to = useremail;
-              mailOptions.html = forgetPasswordTemplate(link);
+              mailOptions.html = emailTemplate.forgetPasswordTemplate(link);
               sendEmail(mailOptions);
               let response = {
                 status:successMessage.status,

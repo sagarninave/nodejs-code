@@ -9,6 +9,7 @@ const userConstants = {
   EMAIL_ALREADY_VERIFIED: "email already verified",
   EMAIL_VERIFICATION_FAILED: "email verification failed",
   LOGIN: "user login successfully",
+  LOGIN_EMAIL_SEND: "recent login email send",
   WRONG_PASSWORD: "password does not match",
   FORGET_PASSWORD: "forget password link has been send",
   FORGET_PASSWORD_LINK_ALREADY_SEND: "forget password link has been send already",
