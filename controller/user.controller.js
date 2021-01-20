@@ -7,6 +7,7 @@ const emailTemplate = require('../email/emailTemplate');
 
 const passwordHash = require('password-hash');
 const jwt = require('jsonwebtoken');
+const jwtConst = require('./../constants/jwt');
 
 const User = require('../schema/user.schema');
 const forgetPasswordSchema = require('../schema/forgetpassword.schema');
@@ -100,43 +101,6 @@ exports.signup = (req, res, next) => {
   })
 };
 
-// exports.sendemailverificationcode = (req, res, next) => {
-
-//   let userId = req.params.userId;
-
-//   User.findById(userId)
-//   .exec()
-//   .then(result => {
-//     console.log(result)
-//     if(result){
-//       let link = `http://localhost:8000/api/user/verifyemail/${userId}`
-//       mailOptions.subject = "Email Verification"
-//       mailOptions.to = result.email;
-//       mailOptions.html = emailTemplate.emailVerificationTemplate(link)
-//       sendEmail(mailOptions);
-//       let response = {
-//         status:successMessage.status,
-//         message: userConstants.VERIFICATION_CODE_SEND,
-//         verification_code_send: true
-//       };
-//       res.status(httpStatus.success).json(response);
-//     }
-//     else{    
-//       let response = {
-//         status : errorMessage.status,
-//         message: userConstants.USER_NOT_EXISTS
-//       }
-//       return res.status(httpStatus.success).json(response);
-//     }      
-//   })
-//   .catch(error => {
-//     let errorResponse = {
-//       error: errorMessage.somethingWentWrong
-//     };
-//     res.status(httpStatus.internalServerError).json(errorResponse); 
-//   });
-// };
-
 exports.verifyemail = (req, res, next) => {
 
   let userId = req.params.userId;
@@ -188,8 +152,8 @@ exports.login = (req, res, next) => {
           email:result.email,
           role:result.role,
         }
-        let accessToken = jwt.sign(user,"access", {expiresIn:"7d"});
-        let refreshToken = jwt.sign(user,"refresh", {expiresIn:"30d"});
+        let accessToken = jwt.sign(user, jwtConst.accessSecretKey, {expiresIn:jwtConst.accessKeyExpiresIn});
+        let refreshToken = jwt.sign(user, jwtConst.refreshSecretKey, {expiresIn:jwtConst.refreshKeyExpiresIn});
         let response = {
           status : successMessage.status,
           message: userConstants.LOGIN,
@@ -423,4 +387,34 @@ exports.changepassword = (req, res, next) => {
     };
     res.status(200).json(errorResponse);
   })
+};
+
+exports.userprofile = (req, res, next) => {
+  let userId = req.user.id;
+  User.findById(userId)
+  .select('first_name last_name email username phone avatar address gender dob social role')
+  .exec()
+  .then(result => {
+    if(result){
+      let response = {
+        status : successMessage.status,
+        message: userConstants.USER_PROFILE,
+        user: result
+      }
+      return res.status(httpStatus.success).json(response);
+    }
+    else{
+      let response = {
+        status : errorMessage.status,
+        message: userConstants.USER_NOT_EXISTS
+      }
+      return res.status(httpStatus.success).json(response);
+    }
+  })
+  .catch(error => {
+    let errorResponse = {
+      error: errorMessage.somethingWentWrong
+    };
+    res.status(httpStatus.internalServerError).json(errorResponse); 
+  });
 };

@@ -19,7 +19,8 @@ const userConstants = {
   PASSWORD_CHANGED: "password has been changed successfully",
   PASSWORD_CHANGED_FAILED: "password change has been failed",
   PASSWORD_NOT_MATCHED: "password and confirm password should match",
-  OLD_PASSWORD_MISMATCH: "old password is not matched with new password"
+  OLD_PASSWORD_MISMATCH: "old password is not matched with new password",
+  USER_PROFILE: "user profile successfully retrived"
 };
 
 module.exports = {
