@@ -83,37 +83,6 @@
         }
       }
     },
-    "/api/user/sendemailverificationcode/{userId}": {
-      "get": {
-        "tags": [
-          "User Management"
-        ],
-        "description": "Email verification code send",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userId",
-            "description": "Email verification code send",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "The request is OK"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
     "/api/user/verifyemail/{userId}": {
       "get": {
         "tags": [
@@ -222,6 +191,37 @@
             "schema": {
               "$ref": "#/definitions/setnewpassword"
             }
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/userprofile/": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "User profile",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "User Profile",
+            "required": true,
+            "type": "string"
           }
         ],
         "consumes": [
