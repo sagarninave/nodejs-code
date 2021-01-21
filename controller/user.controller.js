@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken');
 const jwtConst = require('./../constants/jwt');
 
 const User = require('../schema/user.schema');
-const forgetPasswordSchema = require('../schema/forgetpassword.schema');
+const forgetPassword = require('../schema/forgetpassword.schema');
 
 exports.checkuserexists = (req, res, next) => {
 
@@ -215,7 +215,7 @@ exports.forgetpassword = (req, res, next) => {
   .exec()
   .then(result => {
     if(result){
-      forgetPasswordSchema.findOne({email:result.email})
+      forgetPassword.findOne({email:result.email})
       .exec()
       .then(result => {
         if(result){
@@ -228,7 +228,7 @@ exports.forgetpassword = (req, res, next) => {
         }
         else{
           const new_code = new mongoose.Types.ObjectId();
-          const forgetPassword = new forgetPasswordSchema({
+          const forgetPassword = new forgetPassword({
             _id: new mongoose.Types.ObjectId(),
             code: new_code,
             email: useremail,
@@ -279,7 +279,7 @@ exports.setnewpassword = (req, res, next) => {
   let user_email = req.body.email;
   let user_password = req.body.password;
 
-  forgetPasswordSchema.findOne({email: user_email})
+  forgetPassword.findOne({email: user_email})
   .exec()
   .then(result => {
     if(result){
@@ -431,7 +431,6 @@ exports.edituserprofile = (req, res, next) => {
     dob: req.body.dob,
     social: req.body.social
   }
-  console.log(user);
   User.findById(userId)
   .then(result => {
     if(result){
