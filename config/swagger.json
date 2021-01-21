@@ -8,8 +8,12 @@
   "host": "localhost:8000",
   "tags": [
     {
+      "name": "Database Management",
+      "description": "Get local mongo database backup"
+    },
+    {
       "name": "User Management",
-      "description": ""
+      "description": "User management APIs such as get user, get profile, edit profile, signup, signin etc"
     },
     {
       "name": "Finance Management",
@@ -20,6 +24,28 @@
     "http"
   ],
   "paths": {
+    "/dbbackup": {
+      "get": {
+        "tags": [
+          "Database Management"
+        ],
+        "description": "Get local mongo database backup",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/api/user/signup": {
       "post": {
         "tags": [
