@@ -4,7 +4,9 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
-require('./config/mongoDB');
+const {dbbackup} = require('./config/mongoDB');
+
+// const dbbackup = require('./config/mongoDB');
 
 const userRoute = require('./routes/user.route');
 
@@ -28,6 +30,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/dbbackup', dbbackup);
 app.use('/api/user', userRoute);
 
 app.use((req, res, next) => {
