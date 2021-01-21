@@ -13,6 +13,7 @@ router.post("/setnewpassword", userController.setnewpassword);
 router.post("/changepassword", userController.changepassword);
 router.get("/recentloginemailsend", userController.recentloginemailsend);
 router.get("/userprofile", authMiddleware, userController.userprofile);
+router.post("/edituserprofile", authMiddleware, userController.edituserprofile);
 
 module.exports = router;
 

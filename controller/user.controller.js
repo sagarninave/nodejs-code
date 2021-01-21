@@ -418,3 +418,47 @@ exports.userprofile = (req, res, next) => {
     res.status(httpStatus.internalServerError).json(errorResponse); 
   });
 };
+
+exports.edituserprofile = (req, res, next) => {
+  let userId = req.user.id;
+  let user = {
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    username: req.body.username,
+    phone: req.body.phone,
+    address: req.body.address,
+    gender: req.body.gender,
+    dob: req.body.dob,
+    social: req.body.social
+  }
+  console.log(user);
+  User.findById(userId)
+  .then(result => {
+    if(result){
+      return User.updateOne({_id:userId}, {$set: user})
+    }
+  })
+  .then(result => {
+    if(result && result.ok==1){
+      let response = {
+        status : successMessage.status,
+        message: userConstants.USER_PROFILE_UPDATE
+      }
+      res.status(httpStatus.success).json(response);
+    }
+    else{
+      let response = {
+        status : errorMessage.status,
+        message: userConstants.USER_PROFILE_UPDATE_FAILED
+      }
+      return res.status(httpStatus.success).json(response);
+    }
+  })
+  .catch(error => {
+    let errorResponse = {
+      status:errorMessage.status,
+      message: errorMessage.somethingWentWrong
+    };
+    res.status(200).json(errorResponse);
+  });
+};
