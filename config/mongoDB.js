@@ -5,7 +5,10 @@ const router = express.Router();
 
 const user = require('../schema/user.schema');
 const forgetpassword = require('../schema/forgetpassword.schema');
-
+const mydbs=[
+  {databasename:"user", database:user},
+  {databasename:"forgetpassword", database:forgetpassword}
+]
 mongoDBURL = "mongodb://127.0.0.1:27017/ganaraj";
 // mongoDBURL = "mongodb+srv://adminuser:adminpassword@cluster0.wzs7f.mongodb.net/Cluster0?retryWrites=true&w=majority";
 
@@ -14,40 +17,6 @@ mongoose.connect(mongoDBURL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   poolSize: 10
-});
-
-const dbbackup = router.get('/', (req, res, next) => {
-  // user table backup
-  user.find().then(result => {
-    let data = JSON.stringify(result, null, 2);
-    fs.writeFile('./backup/user.json', data, function (err) {
-      if (err) {
-        throw err;
-      }
-      else {
-        res.status(200).json({
-          status: "success",
-          message: "backup taken successfully"
-        });
-      }
-    });
-  });
-
-  // forgrtpassword table backup
-  forgetpassword.find().then(result => {
-    let data = JSON.stringify(result, null, 2);
-    fs.writeFile('./backup/forgetpassword.json', data, function (err) {
-      if (err) {
-        throw err;
-      }
-      else {
-        res.status(200).json({
-          status: "success",
-          message: "backup taken successfully"
-        });
-      }
-    });
-  });
 });
 
 mongoose.connection.on('connected', function () {
@@ -60,6 +29,59 @@ mongoose.connection.on('error', function (err) {
 
 mongoose.connection.on('disconnected', function () {
   console.log('Mongoose default connection disconnected');
+});
+
+let backuppath = './dbbackup';
+let datapath = backuppath+'/data';
+
+function dbfolder(){
+  if (!fs.existsSync(backuppath)){
+    fs.mkdirSync(backuppath);
+  }
+}
+
+function datafolder(){
+  if (!fs.existsSync(datapath)){
+    fs.mkdirSync(datapath);
+  }
+}
+
+function filefolder(dbfile){
+  let filepath = datapath+"/"+dbfile;
+  if (!fs.existsSync(filepath)){
+    fs.mkdirSync(filepath);
+  }
+  return filepath;
+}
+
+const dbbackup = router.get('/', (req, res, next) => {
+  dbfolder();
+  datafolder();
+  mydbs.map(db => {
+    db.database.find().then(result => {
+      let data = JSON.stringify(result, null, 2);
+      let date = new Date();
+      let filename = db.databasename+"-"+
+                     date.getDate()+"-"+
+                     date.getMonth()+1+"-"+
+                     date.getFullYear()+"-"+
+                     date.getHours()+"-"+
+                     date.getMinutes()+"-"+
+                     date.getSeconds()+".json";
+      let filelocation = filefolder(db.databasename)+`/${filename}`;
+      fs.writeFile(filelocation, data, function (err) {
+        if (err) {
+          throw err;
+        }
+        else {
+          res.status(200).json({
+            status: "success",
+            message: "backup taken successfully"
+          });
+        }
+      });
+    });
+  })
 });
 
 module.exports = {
