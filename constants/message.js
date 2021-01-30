@@ -25,6 +25,12 @@ const userConstants = {
   USER_PROFILE_UPDATE: "user profile updated",
 };
 
+const openConstants = {
+  MESSAGE_SEND: "message send successfully",
+  MESSAGE_SEND_FAILED: "message does not send",
+};
+
 module.exports = {
-  userConstants
+  userConstants,
+  openConstants
 };

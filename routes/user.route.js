@@ -10,10 +10,10 @@ router.get("/verifyemail/:userId", userController.verifyemail);
 router.post("/login", userController.login);
 router.get("/forgetpassword/:email", userController.forgetpassword);
 router.post("/setnewpassword", userController.setnewpassword);
-router.post("/changepassword", userController.changepassword);
+router.post("/changepassword", authMiddleware, userController.changepassword);
 router.get("/recentloginemailsend", userController.recentloginemailsend);
 router.get("/userprofile", authMiddleware, userController.userprofile);
-router.post("/edituserprofile", authMiddleware, userController.edituserprofile);
+router.put("/edituserprofile", authMiddleware, userController.edituserprofile);
 
 module.exports = router;
 

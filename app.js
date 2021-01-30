@@ -5,6 +5,7 @@ const cors = require('cors');
 const app = express();
 
 const {dbbackup} = require('./config/mongoDB');
+const openRoute = require('./routes/open.route');
 const userRoute = require('./routes/user.route');
 
 const swaggerUi = require('swagger-ui-express');
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/dbbackup', dbbackup);
+app.use('/api/open', openRoute);
 app.use('/api/user', userRoute);
 
 app.use((req, res, next) => {
