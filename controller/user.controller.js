@@ -228,12 +228,12 @@ exports.forgetpassword = (req, res, next) => {
         }
         else{
           const new_code = new mongoose.Types.ObjectId();
-          const forgetPassword = new forgetPassword({
+          const forgetpassword = new forgetPassword({
             _id: new mongoose.Types.ObjectId(),
             code: new_code,
             email: useremail,
           });
-          forgetPassword.save()
+          forgetpassword.save()
           .then(result => {
             if(result){
               let link = `https://gajavakraganesh.web.app/setnewpassword/${useremail}/${new_code}`
@@ -336,12 +336,12 @@ exports.setnewpassword = (req, res, next) => {
 
 exports.changepassword = (req, res, next) => {
 
-  let email = req.body.email;
+  let userId = req.iser.id;
   let old_password = req.body.old_password;
   let new_password = req.body.new_password;
   let confirm_password = req.body.confirm_password;
 
-  User.findOne({email:email})
+  User.findOne({_id:userId})
   .then(result => {
     if(result){
       let isAuthenticated = passwordHash.verify(old_password, result.password);
