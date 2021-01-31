@@ -7,4 +7,4 @@ const forgetPasswordSchema = new Schema({
   email: {type: String, require: true}
 });
 
-module.exports = mongoose.model("forgetPasswordSchema", forgetPasswordSchema);
+module.exports = mongoose.model("forgetpassword", forgetPasswordSchema);
