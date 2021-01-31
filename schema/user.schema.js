@@ -15,10 +15,15 @@ const userSchema = new Schema({
   address: {type: String, required: false},
   gender: {type: String, required: false},
   dob: {type: Date, required: false},
-  social: {type: Object, require: false},
+  social: {
+    facebook: { type: String, required: false},
+    twitter: { type: String, required: false},
+    instagram: { type: String, required: false},
+    linkedin: { type: String, required: false}
+  },
   role: {type: Number, default: 3}, //admin:1, editor:2, viewer:3
   verified: {type: Boolean, default: false},
   created: {type: Date, default: Date.now, required: true},
 });
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("user", userSchema);
