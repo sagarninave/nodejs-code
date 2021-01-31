@@ -311,7 +311,7 @@ exports.forgetpassword = (req, res, next) => {
   })
   .catch(error => {
     let errorResponse = {
-      error: errorMessage.somethingWentWrong + 2
+      error: errorMessage.somethingWentWrong
     };
     res.status(httpStatus.internalServerError).json(errorResponse); 
   });
