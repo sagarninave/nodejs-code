@@ -210,21 +210,65 @@ exports.recentloginemailsend = (req, res, next) => {
 exports.forgetpassword = (req, res, next) => {
 
   let useremail = req.params.email; 
+  let new_code = new mongoose.Types.ObjectId();
 
   User.findOne({email:useremail})
   .exec()
   .then(result => {
     if(result){
-      forgetPassword.findOne({email:result.email})
+      forgetPassword.findOne({email:useremail})
       .exec()
       .then(result => {
         if(result){
-          let response = {
-            status:successMessage.status,
-            message: userConstants.FORGET_PASSWORD_LINK_ALREADY_SEND,
-            password_reset_link_already_send: true,
-          };
-          res.status(httpStatus.success).json(response);
+          forgetPassword.updateOne({email:useremail}, {$set: {code: new_code}})
+          .then(result => {
+            if(result){
+              let link = `http://localhost:4200/setnewpassword/${useremail}/${new_code}`
+              mailOptions.subject = "Forget Password";
+              mailOptions.to = useremail;
+              mailOptions.html = emailTemplate.forgetPasswordTemplate(link);
+              sendEmail(mailOptions);
+              let response = {
+                status:successMessage.status,
+                message: userConstants.FORGET_PASSWORD,
+              };
+              res.status(httpStatus.success).json(response);
+            }
+          })
+          .catch(error => {
+            let errorResponse = {
+              error: errorMessage.somethingWentWrong
+            };
+            res.status(httpStatus.internalServerError).json(errorResponse); 
+          });
+        }
+        else{
+          const forgetpassword = new forgetPassword({
+            _id: new mongoose.Types.ObjectId(),
+            code: new_code,
+            email: useremail,
+          });
+          forgetpassword.save()
+          .then(result => {
+            if(result){
+              let link = `http://localhost:4200/setnewpassword/${useremail}/${new_code}`
+              mailOptions.subject = "Forget Password";
+              mailOptions.to = useremail;
+              mailOptions.html = emailTemplate.forgetPasswordTemplate(link);
+              sendEmail(mailOptions);
+              let response = {
+                status:successMessage.status,
+                message: userConstants.FORGET_PASSWORD,
+              };
+              res.status(httpStatus.success).json(response);
+            }
+          })
+          .catch(error => {
+            let errorResponse = {
+              error: errorMessage.somethingWentWrong+1
+            };
+            res.status(httpStatus.internalServerError).json(errorResponse); 
+          });
         }
         else{
           const new_code = new mongoose.Types.ObjectId();
