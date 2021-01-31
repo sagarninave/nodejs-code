@@ -265,35 +265,6 @@ exports.forgetpassword = (req, res, next) => {
           })
           .catch(error => {
             let errorResponse = {
-              error: errorMessage.somethingWentWrong+1
-            };
-            res.status(httpStatus.internalServerError).json(errorResponse); 
-          });
-        }
-        else{
-          const new_code = new mongoose.Types.ObjectId();
-          const forgetpassword = new forgetPassword({
-            _id: new mongoose.Types.ObjectId(),
-            code: new_code,
-            email: useremail,
-          });
-          forgetpassword.save()
-          .then(result => {
-            if(result){
-              let link = `https://gajavakraganesh.web.app/setnewpassword/${useremail}/${new_code}`
-              mailOptions.subject = "Forget Password";
-              mailOptions.to = useremail;
-              mailOptions.html = emailTemplate.forgetPasswordTemplate(link);
-              sendEmail(mailOptions);
-              let response = {
-                status:successMessage.status,
-                message: userConstants.FORGET_PASSWORD,
-              };
-              res.status(httpStatus.success).json(response);
-            }
-          })
-          .catch(error => {
-            let errorResponse = {
               error: errorMessage.somethingWentWrong
             };
             res.status(httpStatus.internalServerError).json(errorResponse); 
@@ -304,7 +275,7 @@ exports.forgetpassword = (req, res, next) => {
     else{    
       let response = {
         status : errorMessage.status,
-        message: userConstants.FORGET_PASSWORD_FAILED
+        message: userConstants.USER_NOT_EXISTS
       }
       return res.status(httpStatus.success).json(response);
     }
