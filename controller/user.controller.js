@@ -45,12 +45,6 @@ exports.checkuserexists = (req, res, next) => {
 exports.signup = (req, res, next) => {
   
   let userId = new mongoose.Types.ObjectId();
-  let first_name = req.body.first_name;
-  let last_name = req.body.last_name;
-  let email = req.body.email;
-  let username = req.body.username;
-  let password = passwordHash.generate(req.body.password);
-  let phone = req.body.phone;
 
   User.find({email:req.body.email})
   .exec()
@@ -65,12 +59,17 @@ exports.signup = (req, res, next) => {
     else{
       const user = new User({
         _id: userId,
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
-        username: username,
-        password: password,
-        phone: phone
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        avatar: req.body.avatar,
+        email: req.body.email,
+        username: req.body.username,
+        password: passwordHash.generate(req.body.password),
+        phone: req.body.phone,
+        address: req.body.address,
+        gender: req.body.gender,
+        dob: req.body.dob,
+        social: req.body.social
       });
     
       user.save()
@@ -157,8 +156,15 @@ exports.login = (req, res, next) => {
         let response = {
           status : successMessage.status,
           message: userConstants.LOGIN,
-          access_token: accessToken,
-          refresh_token: refreshToken
+          user : {
+            id:result._id,
+            first_name:result.first_name,
+            last_name:result.last_name,
+            email:result.email,
+            role:result.role,
+            access_token: accessToken,
+            refresh_token: refreshToken
+          }          
         };
         
         return res.status(httpStatus.success).json(response);
@@ -402,6 +408,65 @@ exports.changepassword = (req, res, next) => {
     };
     res.status(200).json(errorResponse);
   })
+};
+
+exports.getalluser = (req, res, next) => {
+  User.find()
+  .select('_id first_name last_name email username phone avatar address gender dob social role')
+  .exec()
+  .then(result => {
+    console.log(result)
+    if(result){
+      let response = {
+        status : successMessage.status,
+        message: userConstants.USERS,
+        user: result
+      }
+      return res.status(httpStatus.success).json(response);
+    }
+    else{
+      let response = {
+        status : errorMessage.status,
+        message: userConstants.USER_NOT_EXISTS
+      }
+      return res.status(httpStatus.success).json(response);
+    }
+  })
+  .catch(error => {
+    let errorResponse = {
+      error: errorMessage.somethingWentWrong
+    };
+    res.status(httpStatus.internalServerError).json(errorResponse); 
+  });
+};
+
+exports.getuser = (req, res, next) => {
+  User.findById(req.params.id)
+  .select('_id first_name last_name email username phone avatar address gender dob social role')
+  .exec()
+  .then(result => {
+    if(result){
+      let response = {
+        status : successMessage.status,
+        message: userConstants.USER_FOUND,
+        user: result
+      }
+      return res.status(httpStatus.success).json(response);
+    }
+    else{
+      let response = {
+        status : errorMessage.status,
+        message: userConstants.USER_NOT_EXISTS
+      }
+      return res.status(httpStatus.success).json(response);
+    }
+  })
+  .catch(error => {
+    let errorResponse = {
+      error: errorMessage.somethingWentWrong
+    };
+    res.status(httpStatus.internalServerError).json(errorResponse); 
+  });
 };
 
 exports.userprofile = (req, res, next) => {
