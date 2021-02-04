@@ -271,6 +271,75 @@
         }
       }
     },
+    "/api/user/getuser/{id}": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Get user details",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token for authenticated user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "User ID for get user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/getalluser": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Get all users",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token for authenticated user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/api/user/userprofile/": {
       "get": {
         "tags": [
@@ -378,11 +447,17 @@
       "required": [
         "first_name",
         "last_name",
+        "avtar",
         "email",
         "username",
         "password",
         "phone",
         "role",
+        "address",
+        "gender",
+        "dob",
+        "social",
+        "verified",
         "created"
       ],
       "properties": {
@@ -393,6 +468,10 @@
         "last_name": {
           "type": "string",
           "example": "Ninave"
+        }, 
+        "avatar": {
+          "type": "string",
+          "example": "https://assets.about.me/users/s/a/g/sagarninave_1560145999_17.jpg"
         },
         "email": {
           "type": "string",
@@ -413,6 +492,31 @@
         "role": {
           "type": "string",
           "example": 3
+        },
+        "address": {
+          "type": "string",
+          "example": "timki, nagpur"
+        },
+        "gender": {
+          "type": "string",
+          "example": "male"
+        },
+        "dob": {
+          "type": "string",
+          "example": "08/06/1996"
+        },
+        "social": {
+          "type": "object",
+          "example": {
+            "facebook":"https://facebook.com/sagarninave1",
+            "twitter":"https://twitter.com/sagarninave1",
+            "instgram":"https://instgram.com/sagarninave1",
+            "linkedin":"https://linkedin.com/sagarninave1"
+          }
+        },
+        "verified": {
+          "type": "boolean",
+          "example": false
         },
         "created": {
           "type": "string",

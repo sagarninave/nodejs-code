@@ -23,6 +23,8 @@ const userConstants = {
   USER_PROFILE: "user profile successfully retrived",
   USER_PROFILE_UPDATE_FAILED: "user profile update failed",
   USER_PROFILE_UPDATE: "user profile updated",
+  USERS: "get all users",
+  USER_FOUND: "user found",
 };
 
 const openConstants = {
