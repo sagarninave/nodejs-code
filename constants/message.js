@@ -25,6 +25,8 @@ const userConstants = {
   USER_PROFILE_UPDATE: "user profile updated",
   USERS: "get all users",
   USER_FOUND: "user found",
+  PROFILE_PHOTO_UPLOAD_FAILED: "profile photo upload has been failed",
+  PROFILE_PHOTO_UPLOAD: "profile photo has been successfully uploaded",
 };
 
 const openConstants = {

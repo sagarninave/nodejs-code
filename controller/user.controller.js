@@ -102,61 +102,44 @@ exports.signup = (req, res, next) => {
 };
 
 exports.uploadprofilepicture = ( req, res, next) => {
-  console.log(req.file);
-  // let userId = new mongoose.Types.ObjectId();
 
-  // User.find({email:req.body.email})
-  // .exec()
-  // .then(result => {
-  //   if(result.length >= 1){
-  //     let response = {
-  //       status : errorMessage.status,
-  //       message: userConstants.USER_EXISTS
-  //     }
-  //     return res.status(httpStatus.success).json(response);
-  //   }
-  //   else{
-  //     const user = new User({
-  //       _id: userId,
-  //       first_name: req.body.first_name,
-  //       last_name: req.body.last_name,
-  //       avatar: req.body.avatar,
-  //       email: req.body.email,
-  //       username: req.body.username,
-  //       password: passwordHash.generate(req.body.password),
-  //       phone: req.body.phone,
-  //       address: req.body.address,
-  //       gender: req.body.gender,
-  //       dob: req.body.dob,
-  //       social: req.body.social
-  //     });
-    
-  //     user.save()
-  //     .then(result => {
-  //       if(result){
-          
-  //         let link = `http://localhost:8000/api/user/verifyemail/${userId}`
-  //         mailOptions.subject = "Email Verification"
-  //         mailOptions.to = email;
-  //         mailOptions.html = emailTemplate.emailVerificationTemplate(link)
-  //         sendEmail(mailOptions);
-          
-  //         let response = {
-  //           status:successMessage.status,
-  //           message: userConstants.USER_REGISTERATION,
-  //           user_id: user._id
-  //         };
-  //         res.status(httpStatus.created).json(response);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       let errorResponse = {
-  //         error: errorMessage.somethingWentWrong
-  //       };
-  //       res.status(httpStatus.internalServerError).json(errorResponse); 
-  //     });
-  //   }
-  // })
+  let new_avatar = req.file.destination+'/'+req.file.filename;
+
+  User.findOne({_id:req.user.id})
+  .then(result => {
+    if(result){
+      User.updateOne({_id:req.user.id}, {$set: {avatar:new_avatar}})
+      .then(result => {
+        if (result){
+          let response = {
+            status : successMessage.status,
+            message: userConstants.PROFILE_PHOTO_UPLOAD
+          }
+          res.status(httpStatus.success).json(response);
+        }
+        else{
+          let response = {
+            status : errorMessage.status,
+            message: userConstants.PROFILE_PHOTO_UPLOAD_FAILED
+          }
+          res.status(httpStatus.success).json(response);
+        }
+      })
+    }
+    else{
+      let response = {
+        status : errorMessage.status,
+        message: userConstants.USER_NOT_EXISTS
+      }
+      res.status(httpStatus.success).json(response);
+    }
+  })
+  .catch(error => {
+    let errorResponse = {
+      error: errorMessage.somethingWentWrong
+    };
+    res.status(200).json(errorResponse);
+  })
 };
 
 exports.verifyemail = (req, res, next) => {
