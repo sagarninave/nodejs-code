@@ -12,6 +12,7 @@ const jwtConst = require('./../constants/jwt');
 const User = require('../schema/user.schema');
 const forgetPassword = require('../schema/forgetpassword.schema');
 
+
 exports.checkuserexists = (req, res, next) => {
 
   User.find({email: req.params.email})
@@ -97,6 +98,47 @@ exports.signup = (req, res, next) => {
         res.status(httpStatus.internalServerError).json(errorResponse); 
       });
     }
+  })
+};
+
+exports.uploadprofilepicture = ( req, res, next) => {
+
+  let new_avatar = req.file.destination+'/'+req.file.filename;
+
+  User.findOne({_id:req.user.id})
+  .then(result => {
+    if(result){
+      User.updateOne({_id:req.user.id}, {$set: {avatar:new_avatar}})
+      .then(result => {
+        if (result){
+          let response = {
+            status : successMessage.status,
+            message: userConstants.PROFILE_PHOTO_UPLOAD
+          }
+          res.status(httpStatus.success).json(response);
+        }
+        else{
+          let response = {
+            status : errorMessage.status,
+            message: userConstants.PROFILE_PHOTO_UPLOAD_FAILED
+          }
+          res.status(httpStatus.success).json(response);
+        }
+      })
+    }
+    else{
+      let response = {
+        status : errorMessage.status,
+        message: userConstants.USER_NOT_EXISTS
+      }
+      res.status(httpStatus.success).json(response);
+    }
+  })
+  .catch(error => {
+    let errorResponse = {
+      error: errorMessage.somethingWentWrong
+    };
+    res.status(200).json(errorResponse);
   })
 };
 

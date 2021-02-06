@@ -371,6 +371,44 @@
         }
       }
     },
+    "/api/user/uploadprofilepicture": {
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Upload user profile picture",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token for authenticated user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "profilepicture",
+            "description": "Get user profile picture",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/api/user/edituserprofile": {
       "put": {
         "tags": [

@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.options('*', cors());
 app.use(cors())
+app.use('/storage/images/profile', express.static('storage/images/profile'));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
