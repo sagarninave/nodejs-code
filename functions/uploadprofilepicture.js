@@ -2,7 +2,7 @@ const fs = require('fs');
 const multer = require('multer');
 const path = require('path');
 
-let folderpath = ['./storage', './storage/images', './storage/images/profile'];
+let folderpath = ['storage', 'storage/images', 'storage/images/profile'];
 
 function createfolders() {
   folderpath.map(fp => {
