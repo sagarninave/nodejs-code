@@ -239,6 +239,222 @@
           }
         }
       }
+    },
+    "/api/user/changepassword": {
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Change password",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token for authenticated user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Change password",
+            "schema": {
+              "$ref": "#/definitions/changepassword"
+            }
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/getuser/{id}": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Get user details",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token for authenticated user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "User ID for get user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/getalluser": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Get all users",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token for authenticated user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/userprofile/": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "User profile",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "User Profile",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/uploadprofilepicture": {
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Upload user profile picture",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token for authenticated user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "profilepicture",
+            "description": "Get user profile picture",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/edituserprofile": {
+      "put": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Update user profile",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User Details to update",
+            "schema": {
+              "$ref": "#/definitions/edituserprofile"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token for authenticated user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -322,6 +538,78 @@
         "password": {
           "type": "string",
           "example": "Password@123"
+        }
+      }
+    },
+    "changepassword": {
+      "required": [
+        "old_password",
+        "new_password",
+        "confirm_password"
+      ],
+      "properties": {
+        "old_password": {
+          "type": "string",
+          "example": "Password@123"
+        },
+        "new_password": {
+          "type": "string",
+          "example": "Pass@123"
+        },
+        "confirm_password": {
+          "type": "string",
+          "example": "Pass@123"
+        }
+      }
+    },
+    "edituserprofile": {
+      "required": [
+        "first_name",
+        "last_name",
+        "username",
+        "phone",
+        "address",
+        "gender",
+        "dob",
+        "social"
+      ],
+      "properties": {
+        "first_name": {
+          "type": "string",
+          "example": "Sagar1"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Ninave1"
+        },
+        "username": {
+          "type": "string",
+          "example": "sagarninave1"
+        },
+        "phone": {
+          "type": "string",
+          "example": "9096514816"
+        },
+        "address": {
+          "type": "string",
+          "example": "mumbai"
+        },
+        "gender": {
+          "type": "string",
+          "example": "male"
+        },
+        "dob": {
+          "type": "string",
+          "example": "1996-06-08"
+        },
+        "social": {
+          "type": "object",
+          "example": {
+            "facebook": "facebook.com/sagarninave1",
+            "instagram": "instagram.com/sagarninave1",
+            "linkedin": "linkedin.com/sagarninave1",
+            "twitter": "twitter.com/sagarninave1"
+          }
         }
       }
     }

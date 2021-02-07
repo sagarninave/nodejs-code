@@ -338,21 +338,99 @@ exports.setnewpassword = (req, res, next) => {
   })
 };
 
+// exports.changepassword = (req, res, next) => {
+
+//   let userId = req.user.id;
+//   let old_password = req.body.old_password;
+//   let new_password = req.body.new_password;
+//   let confirm_password = req.body.confirm_password;
+
+//   User.findOne({_id:userId})
+//   .then(result => {
+//     if(result){
+//       let isAuthenticated = passwordHash.verify(old_password, result.password);
+//       if(isAuthenticated){
+//         if(new_password === confirm_password){
+//           let set_password = {password: passwordHash.generate(new_password)}
+//           return User.updateOne({email:email}, {$set: set_password})
+//         }
+//         else{
+//           let response = {
+//             status : errorMessage.status,
+//             message: userConstants.PASSWORD_NOT_MATCHED
+//           }
+//           res.status(httpStatus.success).json(response);
+//         }
+//       }
+//       else{
+//         let response = {
+//           status : errorMessage.status,
+//           message: userConstants.OLD_PASSWORD_MISMATCH
+//         }
+//         res.status(httpStatus.success).json(response);
+//       }
+//     }
+//     else{
+//       let response = {
+//         status : errorMessage.status,
+//         message: userConstants.USER_NOT_EXISTS
+//       }
+//       res.status(httpStatus.success).json(response);
+//     }
+//   })
+//   .then(result => {
+//     let response = {
+//       status : successMessage.status,
+//       message: userConstants.PASSWORD_CHANGED
+//     }
+//     res.status(httpStatus.success).json(response);
+//   })
+//   .catch(error => {
+//     let errorResponse = {
+//       error: errorMessage.somethingWentWrong
+//     };
+//     res.status(200).json(errorResponse);
+//   })
+// };
+
+
 exports.changepassword = (req, res, next) => {
 
-  let email = req.body.email;
+  let userId = req.user.id;
   let old_password = req.body.old_password;
   let new_password = req.body.new_password;
   let confirm_password = req.body.confirm_password;
 
-  User.findOne({email:email})
+  User.findById(userId)
   .then(result => {
-    if(result){
+    if(result){ 
       let isAuthenticated = passwordHash.verify(old_password, result.password);
       if(isAuthenticated){
         if(new_password === confirm_password){
           let set_password = {password: passwordHash.generate(new_password)}
-          return User.updateOne({email:email}, {$set: set_password})
+          User.updateOne({_id:userId}, {$set: set_password})
+          .then(result => {
+            if(result){
+              let response = {
+                status : successMessage.status,
+                message: userConstants.PASSWORD_CHANGED
+              }
+              res.status(httpStatus.success).json(response);
+            }
+            else{
+              let response = {
+                status : errorMessage.status,
+                message: userConstants.PASSWORD_NOT_MATCHED
+              }
+              res.status(httpStatus.success).json(response);
+            }
+          })
+          .catch(error => {
+            let errorResponse = {
+              error: errorMessage.somethingWentWrong
+            };
+            res.status(500).json(errorResponse);
+          })
         }
         else{
           let response = {
@@ -378,17 +456,141 @@ exports.changepassword = (req, res, next) => {
       res.status(httpStatus.success).json(response);
     }
   })
+  .catch(error => {
+    let errorResponse = {
+      error: errorMessage.somethingWentWrong
+    };
+    res.status(500).json(errorResponse);
+  })
+};
+
+exports.getalluser = (req, res, next) => {
+  User.find()
+  .select('_id first_name last_name email username phone avatar address gender dob social role')
+  .exec()
   .then(result => {
-    let response = {
-      status : successMessage.status,
-      message: userConstants.PASSWORD_CHANGED
+    if(result){
+      let response = {
+        status : successMessage.status,
+        message: userConstants.USERS,
+        user: result
+      }
+      return res.status(httpStatus.success).json(response);
     }
-    res.status(httpStatus.success).json(response);
+    else{
+      let response = {
+        status : errorMessage.status,
+        message: userConstants.USER_NOT_EXISTS
+      }
+      return res.status(httpStatus.success).json(response);
+    }
   })
   .catch(error => {
     let errorResponse = {
       error: errorMessage.somethingWentWrong
     };
-    res.status(200).json(errorResponse);
+    res.status(httpStatus.internalServerError).json(errorResponse); 
+  });
+};
+
+exports.getuser = (req, res, next) => {
+  User.findById(req.params.id)
+  .select('_id first_name last_name email username phone avatar address gender dob social role')
+  .exec()
+  .then(result => {
+    if(result){
+      let response = {
+        status : successMessage.status,
+        message: userConstants.USER_FOUND,
+        user: result
+      }
+      return res.status(httpStatus.success).json(response);
+    }
+    else{
+      let response = {
+        status : errorMessage.status,
+        message: userConstants.USER_NOT_EXISTS
+      }
+      return res.status(httpStatus.success).json(response);
+    }
   })
+  .catch(error => {
+    let errorResponse = {
+      error: errorMessage.somethingWentWrong
+    };
+    res.status(httpStatus.internalServerError).json(errorResponse); 
+  });
+};
+
+exports.userprofile = (req, res, next) => {
+  let userId = req.user.id;
+  User.findById(userId)
+  .select('first_name last_name email username phone avatar address gender dob social role')
+  .exec()
+  .then(result => {
+    if(result){
+      let response = {
+        status : successMessage.status,
+        message: userConstants.USER_PROFILE,
+        user: result
+      }
+      return res.status(httpStatus.success).json(response);
+    }
+    else{
+      let response = {
+        status : errorMessage.status,
+        message: userConstants.USER_NOT_EXISTS
+      }
+      return res.status(httpStatus.success).json(response);
+    }
+  })
+  .catch(error => {
+    let errorResponse = {
+      error: errorMessage.somethingWentWrong
+    };
+    res.status(httpStatus.internalServerError).json(errorResponse); 
+  });
+};
+
+exports.edituserprofile = (req, res, next) => {
+  let userId = req.user.id;
+  let user = {
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    username: req.body.username,
+    phone: req.body.phone,
+    address: req.body.address,
+    gender: req.body.gender,
+    dob: req.body.dob,
+    social: req.body.social
+  }
+  User.findById(userId)
+  .then(result => {
+    if(result){
+      return User.updateOne({_id:userId}, {$set: user})
+    }
+  })
+  .then(result => {
+    if(result && result.ok==1){
+      let response = {
+        status : successMessage.status,
+        message: userConstants.USER_PROFILE_UPDATE
+      }
+      res.status(httpStatus.success).json(response);
+    }
+    else{
+      let response = {
+        status : errorMessage.status,
+        message: userConstants.USER_PROFILE_UPDATE_FAILED
+      }
+      return res.status(httpStatus.success).json(response);
+    }
+  })
+  .catch(error => {
+    let errorResponse = {
+      status:errorMessage.status,
+      message: errorMessage.somethingWentWrong
+    };
+    res.status(200).json(errorResponse);
+  });
 };
