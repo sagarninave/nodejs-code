@@ -1,29 +1,90 @@
 const mongoose = require('mongoose');
+var fs = require('fs');
+var express = require('express');
+const router = express.Router();
 
+const user = require('../schema/user.schema');
+const forgetpassword = require('../schema/forgetpassword.schema');
+const mydbs=[
+  {databasename:"user", database:user},
+  {databasename:"forgetpassword", database:forgetpassword}
+]
 mongoDBURL = "mongodb://127.0.0.1:27017/ganaraj";
 // mongoDBURL = "mongodb+srv://adminuser:adminpassword@cluster0.wzs7f.mongodb.net/Cluster0?retryWrites=true&w=majority";
 
-// Connect to MongoDB
 mongoose.connect(mongoDBURL, {
-   useCreateIndex: true,
-   useNewUrlParser: true,
-   useUnifiedTopology: true,
-   poolSize: 10
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  poolSize: 10
 });
 
-// When connected
 mongoose.connection.on('connected', function () {
-   console.log('Mongoose default connection open on ' + mongoDBURL);
+  console.log('Mongoose default connection open on ' + mongoDBURL);
 });
 
-// If the connection throws an error
 mongoose.connection.on('error', function (err) {
-   console.log('Mongoose default connection error: ' + err);
+  console.log('Mongoose default connection error: ' + err);
 });
 
-// When the connection is disconnected
 mongoose.connection.on('disconnected', function () {
-   console.log('Mongoose default connection disconnected');
+  console.log('Mongoose default connection disconnected');
 });
 
-module.exports = { mongoose };
+let backuppath = './dbbackup';
+let datapath = backuppath+'/data';
+
+function dbfolder(){
+  if (!fs.existsSync(backuppath)){
+    fs.mkdirSync(backuppath);
+  }
+}
+
+function datafolder(){
+  if (!fs.existsSync(datapath)){
+    fs.mkdirSync(datapath);
+  }
+}
+
+function filefolder(dbfile){
+  let filepath = datapath+"/"+dbfile;
+  if (!fs.existsSync(filepath)){
+    fs.mkdirSync(filepath);
+  }
+  return filepath;
+}
+
+const dbbackup = router.get('/', (req, res, next) => {
+  dbfolder();
+  datafolder();
+  mydbs.map(db => {
+    db.database.find().then(result => {
+      let data = JSON.stringify(result, null, 2);
+      let date = new Date();
+      let filename = db.databasename+"-"+
+                     date.getDate()+"-"+
+                     date.getMonth()+1+"-"+
+                     date.getFullYear()+"-"+
+                     date.getHours()+"-"+
+                     date.getMinutes()+"-"+
+                     date.getSeconds()+".json";
+      let filelocation = filefolder(db.databasename)+`/${filename}`;
+      fs.writeFile(filelocation, data, function (err) {
+        if (err) {
+          throw err;
+        }
+        else {
+          res.status(200).json({
+            status: "success",
+            message: "backup taken successfully"
+          });
+        }
+      });
+    });
+  })
+});
+
+module.exports = {
+  mongoose,
+  dbbackup
+};

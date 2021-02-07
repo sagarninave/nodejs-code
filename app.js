@@ -1,11 +1,11 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
-require('./config/mongoDB');
 
+const {dbbackup} = require('./config/mongoDB');
+const openRoute = require('./routes/open.route');
 const userRoute = require('./routes/user.route');
 
 const swaggerUi = require('swagger-ui-express');
@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.options('*', cors());
 app.use(cors())
+app.use('/storage/images/profile', express.static('storage/images/profile'));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -28,6 +29,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/dbbackup', dbbackup);
+app.use('/api/open', openRoute);
 app.use('/api/user', userRoute);
 
 app.use((req, res, next) => {

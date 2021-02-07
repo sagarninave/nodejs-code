@@ -1,0 +1,37 @@
+[
+  {
+    "social": {
+      "facebook": "facebook.com",
+      "twitter": "twitter.com",
+      "instagram": "instagram.com",
+      "linkedin": "linkedin.com"
+    },
+    "role": 3,
+    "verified": false,
+    "_id": "6009a5a371cb8235647b52e1",
+    "first_name": "saranshu",
+    "last_name": "ninanavaad",
+    "email": "sagarninave@gmail.com",
+    "username": "kamalakar",
+    "password": "sha1$26ef994f$1$69a5ea9a9a409bcccecdf74b0d8df9c7095efe2e",
+    "phone": "9096574816",
+    "created": "2021-01-21T16:02:43.964Z",
+    "__v": 0,
+    "address": "mumbai",
+    "dob": "1996-08-05T18:30:00.000Z",
+    "gender": "female"
+  },
+  {
+    "role": 3,
+    "verified": false,
+    "_id": "6009b38186144d17848ef7bc",
+    "first_name": "Sagar",
+    "last_name": "Ninave",
+    "email": "sagarninavzxce@gmail.com",
+    "username": "sagarninave",
+    "password": "sha1$73db8755$1$fb250d43e6150f39d33cd27592fee1d69a380f46",
+    "phone": "9657445206",
+    "created": "2021-01-21T17:01:53.932Z",
+    "__v": 0
+  }
+]
