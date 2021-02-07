@@ -271,6 +271,45 @@
         }
       }
     },
+    "/api/user/changepassword": {
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Change password",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token for authenticated user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Change password",
+            "schema": {
+              "$ref": "#/definitions/changepassword"
+            }
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/api/user/getuser/{id}": {
       "get": {
         "tags": [
@@ -596,6 +635,27 @@
         "password": {
           "type": "string",
           "example": "Password@123"
+        }
+      }
+    },
+    "changepassword": {
+      "required": [
+        "old_password",
+        "new_password",
+        "confirm_password"
+      ],
+      "properties": {
+        "old_password": {
+          "type": "string",
+          "example": "Password@123"
+        },
+        "new_password": {
+          "type": "string",
+          "example": "Pass@123"
+        },
+        "confirm_password": {
+          "type": "string",
+          "example": "Pass@123"
         }
       }
     },
