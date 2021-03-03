@@ -7,6 +7,7 @@ const app = express();
 const {dbbackup} = require('./config/mongoDB');
 const openRoute = require('./routes/open.route');
 const userRoute = require('./routes/user.route');
+const connectionRoute = require('./routes/connection.route');
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./config/swagger.json');
@@ -32,6 +33,7 @@ app.use((req, res, next) => {
 app.use('/dbbackup', dbbackup);
 app.use('/api/open', openRoute);
 app.use('/api/user', userRoute);
+app.use('/api/connection', connectionRoute);
 
 app.use((req, res, next) => {
   const error = new Error('Invalid endpoint');

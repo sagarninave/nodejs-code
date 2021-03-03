@@ -582,6 +582,8 @@
           "type": "string",
           "example": "08/06/1996"
         },
+        "follows": [],
+        "follower": [],
         "social": {
           "type": "object",
           "example": {
