@@ -196,7 +196,9 @@ exports.login = (req, res, next) => {
     .exec()
     .then(result => {
       if (result) {
+       
         let isAuthenticated = passwordHash.verify(userPassword, result.password);
+       
         if (isAuthenticated) {
           let user = {
             id: result._id,
@@ -204,9 +206,11 @@ exports.login = (req, res, next) => {
             last_name: result.last_name,
             email: result.email,
             role: result.role,
-          }
+          };
+
           let accessToken = jwt.sign(user, jwtConst.accessSecretKey, { expiresIn: jwtConst.accessKeyExpiresIn });
           let refreshToken = jwt.sign(user, jwtConst.refreshSecretKey, { expiresIn: jwtConst.refreshKeyExpiresIn });
+          
           let response = {
             status: successMessage.status,
             message: userConstants.LOGIN,
@@ -221,7 +225,20 @@ exports.login = (req, res, next) => {
             }
           };
 
-          return res.status(httpStatus.success).json(response);
+          User.findByIdAndUpdate(result._id, {
+            $set: {
+              last_login: Date.now()
+            }
+          })
+            .then(result => {
+              return res.status(httpStatus.success).json(response);
+
+            }).catch(error => {
+              let errorResponse = {
+                error: errorMessage.somethingWentWrong
+              };
+              res.status(httpStatus.internalServerError).json(errorResponse);
+            });
         }
         else {
           let response = {
