@@ -157,12 +157,8 @@ exports.uploadprofilepicture = (req, res, next) => {
 exports.verifyemail = (req, res, next) => {
 
   let userId = req.params.userId;
-  User.findById(userId)
-    .then(result => {
-      if (result) {
-        return User.updateOne({ _id: userId }, { $set: { verified: true } })
-      }
-    })
+
+  User.findByIdAndUpdate(userId, { $set: { verified: true } })
     .then(result => {
       if (result) {
         let response = {
@@ -178,12 +174,12 @@ exports.verifyemail = (req, res, next) => {
         }
         return res.status(httpStatus.success).json(response);
       }
-    })
-    .catch(error => {
+    }).catch(error => {
       let errorResponse = {
         status: errorMessage.error,
+        message: errorMessage.somethingWentWrong
       };
-      res.status(200).json(errorResponse);
+      res.status(httpStatus.internalServerError).json(errorResponse);
     });
 };
 
@@ -196,9 +192,9 @@ exports.login = (req, res, next) => {
     .exec()
     .then(result => {
       if (result) {
-       
+
         let isAuthenticated = passwordHash.verify(userPassword, result.password);
-       
+
         if (isAuthenticated) {
           let user = {
             id: result._id,
@@ -210,7 +206,7 @@ exports.login = (req, res, next) => {
 
           let accessToken = jwt.sign(user, jwtConst.accessSecretKey, { expiresIn: jwtConst.accessKeyExpiresIn });
           let refreshToken = jwt.sign(user, jwtConst.refreshSecretKey, { expiresIn: jwtConst.refreshKeyExpiresIn });
-          
+
           let response = {
             status: successMessage.status,
             message: userConstants.LOGIN,
@@ -501,138 +497,6 @@ exports.getalluser = (req, res, next) => {
     .select('_id first_name last_name email username phone avatar address gender dob social role')
     .exec()
     .then(result => {
-      if (result) {
-        let response = {
-          status: successMessage.status,
-          message: userConstants.USERS,
-          user: result
-        }
-        return res.status(httpStatus.success).json(response);
-      }
-      else {
-        let response = {
-          status: errorMessage.status,
-          message: userConstants.USER_NOT_EXISTS
-        }
-        return res.status(httpStatus.success).json(response);
-      }
-    })
-    .catch(error => {
-      let errorResponse = {
-        error: errorMessage.somethingWentWrong
-      };
-      res.status(httpStatus.internalServerError).json(errorResponse);
-    });
-};
-
-exports.getuser = (req, res, next) => {
-  User.findById(req.params.id)
-    .select('_id first_name last_name email username phone avatar address gender dob social role')
-    .exec()
-    .then(result => {
-      if (result) {
-        let response = {
-          status: successMessage.status,
-          message: userConstants.USER_FOUND,
-          user: result
-        }
-        return res.status(httpStatus.success).json(response);
-      }
-      else {
-        let response = {
-          status: errorMessage.status,
-          message: userConstants.USER_NOT_EXISTS
-        }
-        return res.status(httpStatus.success).json(response);
-      }
-    })
-    .catch(error => {
-      let errorResponse = {
-        error: errorMessage.somethingWentWrong
-      };
-      res.status(httpStatus.internalServerError).json(errorResponse);
-    });
-};
-
-exports.userprofile = (req, res, next) => {
-  let userId = req.user.id;
-  User.findById(userId)
-    .select('first_name last_name email username phone avatar address gender dob social role')
-    .exec()
-    .then(result => {
-      if (result) {
-        let response = {
-          status: successMessage.status,
-          message: userConstants.USER_PROFILE,
-          user: result
-        }
-        return res.status(httpStatus.success).json(response);
-      }
-      else {
-        let response = {
-          status: errorMessage.status,
-          message: userConstants.USER_NOT_EXISTS
-        }
-        return res.status(httpStatus.success).json(response);
-      }
-    })
-    .catch(error => {
-      let errorResponse = {
-        error: errorMessage.somethingWentWrong
-      };
-      res.status(httpStatus.internalServerError).json(errorResponse);
-    });
-};
-
-exports.edituserprofile = (req, res, next) => {
-  let userId = req.user.id;
-  let user = {
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
-    username: req.body.username,
-    phone: req.body.phone,
-    address: req.body.address,
-    gender: req.body.gender,
-    dob: req.body.dob,
-    social: req.body.social
-  }
-  User.findById(userId)
-    .then(result => {
-      if (result) {
-        return User.updateOne({ _id: userId }, { $set: user })
-      }
-    })
-    .then(result => {
-      if (result && result.ok == 1) {
-        let response = {
-          status: successMessage.status,
-          message: userConstants.USER_PROFILE_UPDATE
-        }
-        res.status(httpStatus.success).json(response);
-      }
-      else {
-        let response = {
-          status: errorMessage.status,
-          message: userConstants.USER_PROFILE_UPDATE_FAILED
-        }
-        return res.status(httpStatus.success).json(response);
-      }
-    })
-    .catch(error => {
-      let errorResponse = {
-        status: errorMessage.status,
-        message: errorMessage.somethingWentWrong
-      };
-      res.status(200).json(errorResponse);
-    });
-};
-
-exports.getalluser = (req, res, next) => {
-  User.find()
-    .select('_id first_name last_name email username phone avatar address gender dob social role')
-    .exec()
-    .then(result => {
-      console.log(result)
       if (result) {
         let response = {
           status: successMessage.status,
