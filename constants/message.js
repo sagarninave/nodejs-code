@@ -1,3 +1,8 @@
+const invalidConstants = {
+  INVALID_EMAIL: "provided email is invalid",
+  INVALID_PASSWORD: "provided password is invalid"
+}
+
 const userConstants = {
   USER_NOT_EXISTS: "user does not exists",
   USER_EXISTS: "user exists with this email",
@@ -35,6 +40,7 @@ const openConstants = {
 };
 
 module.exports = {
+  invalidConstants,
   userConstants,
   openConstants
 };
