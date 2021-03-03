@@ -33,6 +33,11 @@ const userConstants = {
   PROFILE_PHOTO_UPLOAD_FAILED: "profile photo upload has been failed",
   PROFILE_PHOTO_UPLOAD: "profile photo has been successfully uploaded",
 };
+const connectionConstants = {
+  FOLLOW: "follow",
+  UNFOLLOW: "unfollow",
+  FOLLOWER: "followers"
+}
 
 const openConstants = {
   MESSAGE_SEND: "message send successfully",
@@ -42,5 +47,6 @@ const openConstants = {
 module.exports = {
   invalidConstants,
   userConstants,
+  connectionConstants,
   openConstants
 };

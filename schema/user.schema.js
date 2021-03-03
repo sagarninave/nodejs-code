@@ -13,6 +13,8 @@ const userSchema = new Schema({
   address: {type: String, required: false},
   gender: {type: String, required: false},
   dob: {type: Date, required: false},
+  following: {type: Array, required: false},
+  follower: {type: Array, required: false},
   social: {
     facebook: { type: String, required: false},
     twitter: { type: String, required: false},
