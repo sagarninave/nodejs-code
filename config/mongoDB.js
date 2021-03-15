@@ -9,8 +9,8 @@ const mydbs=[
   {databasename:"user", database:user},
   {databasename:"forgetpassword", database:forgetpassword}
 ]
-mongoDBURL = "mongodb://127.0.0.1:27017/ganaraj";
-// mongoDBURL = "mongodb+srv://adminuser:adminpassword@cluster0.wzs7f.mongodb.net/Cluster0?retryWrites=true&w=majority";
+// mongoDBURL = "mongodb://127.0.0.1:27017/ganaraj";
+mongoDBURL = "mongodb+srv://adminuser:adminpassword@cluster0.wzs7f.mongodb.net/Cluster0?retryWrites=true&w=majority";
 
 mongoose.connect(mongoDBURL, {
   useCreateIndex: true,
