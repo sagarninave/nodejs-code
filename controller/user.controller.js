@@ -593,36 +593,6 @@ exports.edituserprofile = (req, res, next) => {
     social: req.body.social
   }
   User.findById(userId)
-<<<<<<< HEAD
-  .then(result => {
-    if(result){
-      return User.updateOne({_id:userId}, {$set: user})
-    }
-  })
-  .then(result => {
-    if(result && result.ok==1){
-      let response = {
-        status : successMessage.status,
-        message: userConstants.USER_PROFILE_UPDATE
-      }
-      res.status(httpStatus.success).json(response);
-    }
-    else{
-      let response = {
-        status : errorMessage.status,
-        message: userConstants.USER_PROFILE_UPDATE_FAILED
-      }
-      return res.status(httpStatus.success).json(response);
-    }
-  })
-  .catch(error => {
-    let errorResponse = {
-      status:errorMessage.status,
-      message: errorMessage.somethingWentWrong
-    };
-    res.status(200).json(errorResponse);
-  });
-=======
     .then(result => {
       if (result) {
         return User.updateOne({ _id: userId }, { $set: user })
@@ -651,5 +621,4 @@ exports.edituserprofile = (req, res, next) => {
       };
       res.status(200).json(errorResponse);
     });
->>>>>>> a90021fe848da94ab685b5a7fae6c00f3ec200ce
 };
