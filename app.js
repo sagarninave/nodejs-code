@@ -30,6 +30,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get('/', (req, res) => {
+  res.send("Hello World!")
+})
+
 app.use('/dbbackup', dbbackup);
 app.use('/api/open', openRoute);
 app.use('/api/user', userRoute);
