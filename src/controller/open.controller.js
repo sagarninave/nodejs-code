@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { successMessage, errorMessage, httpStatus } = require('../constants/httpresponse');
+const { httpStatus, status } = require('../constants/httpresponse');
 const { openConstants } = require('../constants/message');
 const Contact = require('../schema/contact.schema');
 
@@ -17,14 +17,14 @@ exports.contact = (req, res, next) => {
     .then(result => {
       if (result) {
         let response = {
-          status: successMessage.status,
+          status: status.success,
           message: openConstants.MESSAGE_SEND,
         };
         res.status(httpStatus.success).json(response);
       }
       else {
         let response = {
-          status: successMessage.status,
+          status: status.failed,
           message: openConstants.MESSAGE_SEND_FAILED,
         };
         res.status(httpStatus.success).json(response);
@@ -32,7 +32,7 @@ exports.contact = (req, res, next) => {
     })
     .catch(error => {
       let errorResponse = {
-        error: errorMessage.somethingWentWrong
+        error: status.somethingWentWrong
       };
       res.status(httpStatus.internalServerError).json(errorResponse);
     });

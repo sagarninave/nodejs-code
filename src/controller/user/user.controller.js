@@ -1,4 +1,4 @@
-const { successMessage, errorMessage, httpStatus } = require('../../constants/httpresponse');
+const { httpStatus, status } = require('../../constants/httpresponse');
 const { userConstants } = require('../../constants/message');
 const User = require('../../schema/user.schema');
 
@@ -9,7 +9,7 @@ exports.getalluser = (req, res) => {
     .then(result => {
       if (result) {
         let response = {
-          status: successMessage.status,
+          status: status.success,
           message: userConstants.USERS,
           user: result
         }
@@ -17,7 +17,7 @@ exports.getalluser = (req, res) => {
       }
       else {
         let response = {
-          status: errorMessage.status,
+          status: status.failed,
           message: userConstants.USER_NOT_EXISTS
         }
         return res.status(httpStatus.success).json(response);
@@ -25,7 +25,7 @@ exports.getalluser = (req, res) => {
     })
     .catch(error => {
       let errorResponse = {
-        error: errorMessage.somethingWentWrong
+        error: status.somethingWentWrong
       };
       res.status(httpStatus.internalServerError).json(errorResponse);
     });
@@ -38,7 +38,7 @@ exports.getuser = (req, res) => {
     .then(result => {
       if (result) {
         let response = {
-          status: successMessage.status,
+          status: status.success,
           message: userConstants.USER_FOUND,
           user: result
         }
@@ -46,7 +46,7 @@ exports.getuser = (req, res) => {
       }
       else {
         let response = {
-          status: errorMessage.status,
+          status: status.failed,
           message: userConstants.USER_NOT_EXISTS
         }
         return res.status(httpStatus.success).json(response);
@@ -54,7 +54,7 @@ exports.getuser = (req, res) => {
     })
     .catch(error => {
       let errorResponse = {
-        error: errorMessage.somethingWentWrong
+        error: status.somethingWentWrong
       };
       res.status(httpStatus.internalServerError).json(errorResponse);
     });

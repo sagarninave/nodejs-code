@@ -1,4 +1,4 @@
-const { successMessage, errorMessage, httpStatus } = require('../../constants/httpresponse');
+const { httpStatus, status } = require('../../constants/httpresponse');
 const { userConstants } = require('../../constants/message');
 const User = require('../../schema/user.schema');
 
@@ -10,7 +10,7 @@ exports.userprofile = (req, res) => {
     .then(result => {
       if (result) {
         let response = {
-          status: successMessage.status,
+          status: status.success,
           message: userConstants.USER_PROFILE,
           user: result
         }
@@ -18,7 +18,7 @@ exports.userprofile = (req, res) => {
       }
       else {
         let response = {
-          status: errorMessage.status,
+          status: status.failed,
           message: userConstants.USER_NOT_EXISTS
         }
         return res.status(httpStatus.success).json(response);
@@ -26,7 +26,7 @@ exports.userprofile = (req, res) => {
     })
     .catch(error => {
       let errorResponse = {
-        error: errorMessage.somethingWentWrong
+        error: status.somethingWentWrong
       };
       res.status(httpStatus.internalServerError).json(errorResponse);
     });
@@ -48,14 +48,14 @@ exports.edituserprofile = (req, res) => {
     .then(result => {
       if (result && result.ok == 1) {
         let response = {
-          status: successMessage.status,
+          status: status.success,
           message: userConstants.USER_PROFILE_UPDATE
         }
         res.status(httpStatus.success).json(response);
       }
       else {
         let response = {
-          status: errorMessage.status,
+          status: status.failed,
           message: userConstants.USER_PROFILE_UPDATE_FAILED
         }
         return res.status(httpStatus.success).json(response);
@@ -63,8 +63,8 @@ exports.edituserprofile = (req, res) => {
     })
     .catch(error => {
       let errorResponse = {
-        status: errorMessage.status,
-        message: errorMessage.somethingWentWrong
+        status: status.failed,
+        message: status.somethingWentWrong
       };
       res.status(200).json(errorResponse);
     });
@@ -74,7 +74,7 @@ exports.uploadprofilepicture = async (req, res) => {
 
   if (req.file.size > 1000000) {
     let response = {
-      status: errorMessage.status,
+      status: status.failed,
       message: userConstants.PROFILE_PHOTO_SIZE
     }
     return res.status(httpStatus.internalServerError).json(response);
@@ -86,14 +86,14 @@ exports.uploadprofilepicture = async (req, res) => {
         .then(result => {
           if (result) {
             let response = {
-              status: successMessage.status,
+              status: status.success,
               message: userConstants.PROFILE_PHOTO_UPLOAD
             }
             res.status(httpStatus.success).json(response);
           }
           else {
             let response = {
-              status: errorMessage.status,
+              status: status.failed,
               message: userConstants.PROFILE_PHOTO_UPLOAD_FAILED
             }
             res.status(httpStatus.success).json(response);
@@ -101,7 +101,7 @@ exports.uploadprofilepicture = async (req, res) => {
         })
         .catch(error => {
           let errorResponse = {
-            error: errorMessage.somethingWentWrong
+            error: status.somethingWentWrong
           };
           res.status(200).json(errorResponse);
         })

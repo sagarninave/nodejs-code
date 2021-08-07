@@ -1,11 +1,8 @@
-const successMessage = { 
-  status: 'success' 
-};
-
-const errorMessage = { 
-  status: 'failed',
-  somethingWentWrong: 'something went wrong',
-};
+const status = {
+  success: "success",
+  failed: "failed",
+  somethingWentWrong: "something went wrong",
+}
 
 const httpStatus = {
   success: 200,
@@ -19,7 +16,6 @@ const httpStatus = {
 };
 
 module.exports = {
-  successMessage,
-  errorMessage,
-  httpStatus
+  httpStatus,
+  status
 };

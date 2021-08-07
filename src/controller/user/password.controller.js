@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { successMessage, errorMessage, httpStatus } = require('../../constants/httpresponse');
+const { httpStatus, status } = require('../../constants/httpresponse');
 const { userConstants } = require('../../constants/message');
 const { mailOptions, sendEmail } = require('../../email/emailConfig');
 const emailTemplate = require('../../email/emailTemplate');
@@ -29,7 +29,7 @@ exports.forgetpassword = (req, res) => {
                     mailOptions.html = emailTemplate.forgetPasswordTemplate(link);
                     sendEmail(mailOptions);
                     let response = {
-                      status: successMessage.status,
+                      status: status.success,
                       message: userConstants.FORGET_PASSWORD,
                     };
                     res.status(httpStatus.success).json(response);
@@ -37,7 +37,7 @@ exports.forgetpassword = (req, res) => {
                 })
                 .catch(error => {
                   let errorResponse = {
-                    error: errorMessage.somethingWentWrong
+                    error: status.somethingWentWrong
                   };
                   res.status(httpStatus.internalServerError).json(errorResponse);
                 });
@@ -57,7 +57,7 @@ exports.forgetpassword = (req, res) => {
                     mailOptions.html = emailTemplate.forgetPasswordTemplate(link);
                     sendEmail(mailOptions);
                     let response = {
-                      status: successMessage.status,
+                      status: status.success,
                       message: userConstants.FORGET_PASSWORD,
                     };
                     res.status(httpStatus.success).json(response);
@@ -65,7 +65,7 @@ exports.forgetpassword = (req, res) => {
                 })
                 .catch(error => {
                   let errorResponse = {
-                    error: errorMessage.somethingWentWrong
+                    error: status.somethingWentWrong
                   };
                   res.status(httpStatus.internalServerError).json(errorResponse);
                 });
@@ -74,7 +74,7 @@ exports.forgetpassword = (req, res) => {
       }
       else {
         let response = {
-          status: errorMessage.status,
+          status: status.failed,
           message: userConstants.USER_NOT_EXISTS
         }
         return res.status(httpStatus.success).json(response);
@@ -82,7 +82,7 @@ exports.forgetpassword = (req, res) => {
     })
     .catch(error => {
       let errorResponse = {
-        error: errorMessage.somethingWentWrong
+        error: status.somethingWentWrong
       };
       res.status(httpStatus.internalServerError).json(errorResponse);
     });
@@ -111,7 +111,7 @@ exports.setnewpassword = (req, res) => {
             .then(result => {
               if (result) {
                 let response = {
-                  status: successMessage.status,
+                  status: status.success,
                   message: userConstants.PASSWORD_CHANGED
                 }
                 res.status(httpStatus.success).json(response);
@@ -127,7 +127,7 @@ exports.setnewpassword = (req, res) => {
         }
         else {
           let response = {
-            status: errorMessage.status,
+            status: status.failed,
             message: userConstants.FORGET_PASSWORD_CODE_MISMATCH
           }
           res.status(httpStatus.success).json(response);
@@ -135,7 +135,7 @@ exports.setnewpassword = (req, res) => {
       }
       else {
         let response = {
-          status: errorMessage.status,
+          status: status.failed,
           message: userConstants.FORGET_PASSWORD_LINK_RESEND
         }
         res.status(httpStatus.success).json(response);
@@ -143,7 +143,7 @@ exports.setnewpassword = (req, res) => {
     })
     .catch(error => {
       let errorResponse = {
-        error: errorMessage.somethingWentWrong
+        error: status.somethingWentWrong
       };
       res.status(200).json(errorResponse);
     })
@@ -167,14 +167,14 @@ exports.changepassword = (req, res) => {
               .then(result => {
                 if (result) {
                   let response = {
-                    status: successMessage.status,
+                    status: status.success,
                     message: userConstants.PASSWORD_CHANGED
                   }
                   res.status(httpStatus.success).json(response);
                 }
                 else {
                   let response = {
-                    status: errorMessage.status,
+                    status: status.failed,
                     message: userConstants.PASSWORD_NOT_MATCHED
                   }
                   res.status(httpStatus.success).json(response);
@@ -182,14 +182,14 @@ exports.changepassword = (req, res) => {
               })
               .catch(error => {
                 let errorResponse = {
-                  error: errorMessage.somethingWentWrong
+                  error: status.somethingWentWrong
                 };
                 res.status(500).json(errorResponse);
               })
           }
           else {
             let response = {
-              status: errorMessage.status,
+              status: status.failed,
               message: userConstants.PASSWORD_NOT_MATCHED
             }
             res.status(httpStatus.success).json(response);
@@ -197,7 +197,7 @@ exports.changepassword = (req, res) => {
         }
         else {
           let response = {
-            status: errorMessage.status,
+            status: status.failed,
             message: userConstants.OLD_PASSWORD_MISMATCH
           }
           res.status(httpStatus.success).json(response);
@@ -205,7 +205,7 @@ exports.changepassword = (req, res) => {
       }
       else {
         let response = {
-          status: errorMessage.status,
+          status: status.failed,
           message: userConstants.USER_NOT_EXISTS
         }
         res.status(httpStatus.success).json(response);
@@ -213,7 +213,7 @@ exports.changepassword = (req, res) => {
     })
     .catch(error => {
       let errorResponse = {
-        error: errorMessage.somethingWentWrong
+        error: status.somethingWentWrong
       };
       res.status(500).json(errorResponse);
     })
