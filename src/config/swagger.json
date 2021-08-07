@@ -18,10 +18,6 @@
     {
       "name": "User Management",
       "description": "User management APIs such as get user, get profile, edit profile, signup, signin etc"
-    },
-    {
-      "name": "Finance Management",
-      "description": ""
     }
   ],
   "schemes": [
@@ -426,8 +422,8 @@
           },
           {
             "in": "formData",
-            "name": "profilepicture",
-            "description": "Get user profile picture",
+            "name": "avatar",
+            "description": "Upload profile picture",
             "required": true,
             "type": "file"
           }
