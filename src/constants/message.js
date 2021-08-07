@@ -1,43 +1,39 @@
 const invalidConstants = {
-  INVALID_EMAIL: "provided email is invalid",
-  INVALID_PASSWORD: "provided password is invalid"
+  INVALID_EMAIL: "Email is invalid",
+  INVALID_PASSWORD: "Password is invalid"
 }
 
 const userConstants = {
-  USER_NOT_EXISTS: "user does not exists",
-  USER_EXISTS: "user exists with this email",
-  USER_REGISTERATION: "user registered successfully",
-  VERIFICATION_CODE_SEND: "email verification code sent successfully",
-  VERIFICATION_CODE_ALREADY_SEND: "email verification code is already sent",
-  VERIFICATION_CODE_RESEND: "verification code resend",
-  EMAIL_VERIFIED: "email verified successfully",
-  EMAIL_ALREADY_VERIFIED: "email already verified",
-  EMAIL_VERIFICATION_FAILED: "email verification failed",
-  LOGIN: "user login successfully",
-  LOGIN_EMAIL_SEND: "recent login email send",
-  WRONG_PASSWORD: "password does not match",
-  FORGET_PASSWORD: "forget password link has been send",
-  FORGET_PASSWORD_LINK_ALREADY_SEND: "forget password link has been send already",
-  FORGET_PASSWORD_LINK_RESEND: "send forget password link again",
-  FORGET_PASSWORD_FAILED: "forget password link send failed",
-  FORGET_PASSWORD_CODE_MISMATCH: "forget password code is mismatch",
-  PASSWORD_CHANGED: "password has been changed successfully",
-  PASSWORD_CHANGED_FAILED: "password change has been failed",
-  PASSWORD_NOT_MATCHED: "password and confirm password should match",
-  OLD_PASSWORD_MISMATCH: "old password is not matched with new password",
-  USER_PROFILE: "user profile successfully retrived",
-  USER_PROFILE_UPDATE_FAILED: "user profile update failed",
-  USER_PROFILE_UPDATE: "user profile updated",
-  USERS: "get all users",
-  USER_FOUND: "user found",
-  PROFILE_PHOTO_UPLOAD_FAILED: "profile photo upload has been failed",
-  PROFILE_PHOTO_UPLOAD: "profile photo has been successfully uploaded",
+  USER_FOUND: "User found",
+  USER_NOT_EXISTS: "User does not exists",
+  USER_EXISTS: "User exists with this email",
+  USER_REGISTERATION: "User registered",
+  VERIFICATION_CODE_SEND: "Email verification code sent",
+  VERIFICATION_CODE_ALREADY_SEND: "Email verification code is already sent",
+  VERIFICATION_CODE_RESEND: "Verification code resend",
+  EMAIL_VERIFIED: "Email verified",
+  EMAIL_ALREADY_VERIFIED: "Email already verified",
+  EMAIL_VERIFICATION_FAILED: "Email verification failed",
+  LOGIN: "Login user",
+  LOGIN_EMAIL_SEND: "Recent login email send",
+  WRONG_PASSWORD: "Password does not match",
+  FORGET_PASSWORD: "Forget password link sent",
+  FORGET_PASSWORD_LINK_ALREADY_SEND: "Forget password link send already",
+  FORGET_PASSWORD_LINK_RESEND: "Send forget password link again",
+  FORGET_PASSWORD_FAILED: "Forget password link send failed",
+  FORGET_PASSWORD_CODE_MISMATCH: "Forget password code does not match",
+  PASSWORD_CHANGED: "Password changed",
+  PASSWORD_CHANGED_FAILED: "Password change failed",
+  PASSWORD_NOT_MATCHED: "Password and confirm password should match",
+  OLD_PASSWORD_MISMATCH: "Old password and new password does not matched",
+  USER_PROFILE: "User profile retrived",
+  USER_PROFILE_UPDATE_FAILED: "User profile update failed",
+  USER_PROFILE_UPDATE: "User profile updated",
+  USERS: "Get all users",
+  PROFILE_PHOTO_UPLOAD_FAILED: "Profile photo upload failed",
+  PROFILE_PHOTO_UPLOAD: "Profile photo uploaded",
+  PROFILE_PHOTO_SIZE: "File size should not more than 1 MB"
 };
-const connectionConstants = {
-  FOLLOW: "follow",
-  UNFOLLOW: "unfollow",
-  FOLLOWER: "followers"
-}
 
 const openConstants = {
   MESSAGE_SEND: "message send successfully",
@@ -47,6 +43,5 @@ const openConstants = {
 module.exports = {
   invalidConstants,
   userConstants,
-  connectionConstants,
   openConstants
 };

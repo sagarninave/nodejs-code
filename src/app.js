@@ -7,10 +7,17 @@ const app = express();
 const {dbbackup} = require('./config/mongoDB');
 const openRoute = require('./routes/open.route');
 const userRoute = require('./routes/user.route');
-const connectionRoute = require('./routes/connection.route');
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./config/swagger.json');
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+  cloud_name : 'salunkemaratha-com',
+  api_key : '562755584139166',
+  api_secret : '21EwKyuk0uvlSkTwCK41_7R7VUs'
+})
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(morgan('dev'));
@@ -18,7 +25,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.options('*', cors());
 app.use(cors())
-app.use('/storage/images/profile', express.static('storage/images/profile'));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -37,7 +43,6 @@ app.get('/', (req, res) => {
 app.use('/dbbackup', dbbackup);
 app.use('/api/open', openRoute);
 app.use('/api/user', userRoute);
-app.use('/api/connection', connectionRoute);
 
 app.use((req, res, next) => {
   const error = new Error('Invalid endpoint');
