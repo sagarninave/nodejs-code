@@ -14,7 +14,7 @@ const jwtConst = require('./../constants/jwt');
 const User = require('../schema/user.schema');
 const forgetPassword = require('../schema/forgetpassword.schema');
 
-exports.checkuserexists = (req, res, next) => {
+exports.checkuserexists = (req, res) => {
 
   User.find({ email: req.params.email })
     .select('first_name last_name email phone verified role')
@@ -44,7 +44,7 @@ exports.checkuserexists = (req, res, next) => {
     });
 };
 
-exports.signup = (req, res, next) => {
+exports.signup = (req, res) => {
 
   let userId = new mongoose.Types.ObjectId();
 
@@ -76,15 +76,10 @@ exports.signup = (req, res, next) => {
           _id: userId,
           first_name: req.body.first_name,
           last_name: req.body.last_name,
-          avatar: req.body.avatar,
           email: req.body.email,
-          username: req.body.username,
           password: passwordHash.generate(req.body.password),
+          phone_code: req.body.phone_code,
           phone: req.body.phone,
-          address: req.body.address,
-          gender: req.body.gender,
-          dob: req.body.dob,
-          social: req.body.social
         });
 
         user.save()
@@ -113,7 +108,7 @@ exports.signup = (req, res, next) => {
     })
 };
 
-exports.uploadprofilepicture = (req, res, next) => {
+exports.uploadprofilepicture = (req, res) => {
 
   let new_avatar = req.file.destination + '/' + req.file.filename;
 
@@ -154,7 +149,7 @@ exports.uploadprofilepicture = (req, res, next) => {
     })
 };
 
-exports.verifyemail = (req, res, next) => {
+exports.verifyemail = (req, res) => {
 
   let userId = req.params.userId;
 
@@ -183,7 +178,7 @@ exports.verifyemail = (req, res, next) => {
     });
 };
 
-exports.login = (req, res, next) => {
+exports.login = (req, res) => {
 
   let userEmail = req.body.email;
   let userPassword = req.body.password;
@@ -260,7 +255,7 @@ exports.login = (req, res, next) => {
     });
 };
 
-exports.recentloginemailsend = (req, res, next) => {
+exports.recentloginemailsend = (req, res) => {
   let email = "sagarninave@gmail.com";
   let emailData = {
     time: new Date(),
@@ -280,7 +275,7 @@ exports.recentloginemailsend = (req, res, next) => {
   return res.status(httpStatus.success).json(response);
 }
 
-exports.forgetpassword = (req, res, next) => {
+exports.forgetpassword = (req, res) => {
 
   let useremail = req.params.email;
   let new_code = new mongoose.Types.ObjectId();
@@ -361,7 +356,7 @@ exports.forgetpassword = (req, res, next) => {
     });
 };
 
-exports.setnewpassword = (req, res, next) => {
+exports.setnewpassword = (req, res) => {
 
   let user_code = req.body.code;
   let user_email = req.body.email;
@@ -422,7 +417,7 @@ exports.setnewpassword = (req, res, next) => {
     })
 };
 
-exports.changepassword = (req, res, next) => {
+exports.changepassword = (req, res) => {
 
   let userId = req.user.id;
   let old_password = req.body.old_password;
@@ -492,7 +487,7 @@ exports.changepassword = (req, res, next) => {
     })
 };
 
-exports.getalluser = (req, res, next) => {
+exports.getalluser = (req, res) => {
   User.find()
     .select('_id first_name last_name email username phone avatar address gender dob social role')
     .exec()
@@ -521,7 +516,7 @@ exports.getalluser = (req, res, next) => {
     });
 };
 
-exports.getuser = (req, res, next) => {
+exports.getuser = (req, res) => {
   User.findById(req.params.id)
     .select('_id first_name last_name email username phone avatar address gender dob social role')
     .exec()
@@ -550,7 +545,7 @@ exports.getuser = (req, res, next) => {
     });
 };
 
-exports.userprofile = (req, res, next) => {
+exports.userprofile = (req, res) => {
   let userId = req.user.id;
   User.findById(userId)
     .select('first_name last_name email username phone avatar address gender dob social role')
@@ -580,7 +575,7 @@ exports.userprofile = (req, res, next) => {
     });
 };
 
-exports.edituserprofile = (req, res, next) => {
+exports.edituserprofile = (req, res) => {
   let userId = req.user.id;
   let user = {
     first_name: req.body.first_name,

@@ -1,7 +1,7 @@
 {
-  "name": "ganaraj",
+  "name": "gajavakra",
   "version": "1.0.0",
-  "description": "it is project of ganaraj ganesh mandal",
+  "description": "it is project of gajavakra ganesh mandal",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

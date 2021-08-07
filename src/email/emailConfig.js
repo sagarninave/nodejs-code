@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const mailOptions = {
-  from: 'Ganaraj <dipakhedaoo2020@gmail.com>',
+  from: 'Gajavakra <dipakhedaoo@gmail.com>',
   to: '',
   subject: '',
   html: ''

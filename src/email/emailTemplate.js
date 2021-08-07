@@ -47,7 +47,7 @@ const recentLoginTemplate = (emailData) => {
                 <img src="https://gajavakraganesh.web.app/assets/images/shortcutIcon.png"/>
               </center>
               <div style="margin: 8px; text-align: left;">
-                <p>Welcome to Ganaraj!</p>
+                <p>Welcome to gajavakra!</p>
                 <p> You have recently logged in  </p>
                 <p class="info"> IP: ${emailData.ip} </p>
                 <p class="info"> System: ${emailData.system} </p>
@@ -119,9 +119,9 @@ const emailVerificationTemplate = (link) => {
                       <img src="https://gajavakraganesh.web.app/assets/images/shortcutIcon.png"/>
                     </center>
                     <div style="margin: 8px; text-align: left;">
-                      <p class="head">Welcome to Ganaraj!</p>
+                      <p class="head">Welcome to gajavakra!</p>
                       <p>
-                        An account created for Ganaraj using this email address.
+                        An account created for gajavakra using this email address.
                       </p>
                       <p>
                         If this is correct, you can verify your email by clicking below link.
@@ -195,7 +195,7 @@ const forgetPasswordTemplate = (link) => {
                       <img src="https://gajavakraganesh.web.app/assets/images/shortcutIcon.png"/>
                     </center>
                     <div style="margin: 8px; text-align: left;">
-                          <p class="head">Welcome to Ganaraj!</p>
+                          <p class="head">Welcome to gajavakra!</p>
                           <p style="text-align:center">Set new password for this account.</p>
                           <button class="resetPassword"> 
                               <a href="${link}" class="resetPasswordLink" style="color:#fff;">
