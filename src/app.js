@@ -13,9 +13,9 @@ const swaggerDocument = require('./config/swagger.json');
 const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({
-  cloud_name : 'salunkemaratha-com',
-  api_key : '562755584139166',
-  api_secret : '21EwKyuk0uvlSkTwCK41_7R7VUs'
+  cloud_name : 'sagarninave',
+  api_key : '192778977315972',
+  api_secret : '9N9Xdldiq7fK9Xg5Nds5dtzGmCM'
 })
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
