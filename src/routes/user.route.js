@@ -1,22 +1,32 @@
 var express = require('express');
 var router = express.Router();
 
-const userController = require('../controller/user.controller');
+const authController = require('../controller/user/auth.controller');
+const passwordController = require('../controller/user/password.controller');
+const profileController = require('../controller/user/profile.controller');
+const userController = require('../controller/user/user.controller');
 const authMiddleware = require('../middleware/auth.middleware');
 const {multer} = require('../utils/multer');
 
-router.get("/checkuserexists/:email", userController.checkuserexists);
-router.post("/signup", userController.signup);
-router.get("/verifyemail/:userId", userController.verifyemail);
-router.post("/login", userController.login);
-router.get("/forgetpassword/:email", userController.forgetpassword);
-router.post("/setnewpassword", userController.setnewpassword);
-router.post("/changepassword", authMiddleware, userController.changepassword);
-router.get("/recentloginemailsend", userController.recentloginemailsend);
+// auth route
+router.get("/checkuserexists/:email", authController.checkuserexists);
+router.post("/signup", authController.signup);
+router.get("/verifyemail/:userId", authController.verifyemail);
+router.post("/login", authController.login);
+router.get("/recentloginemailsend", authController.recentloginemailsend);
+
+// password 
+router.get("/forgetpassword/:email", passwordController.forgetpassword);
+router.post("/setnewpassword", passwordController.setnewpassword);
+router.post("/changepassword", authMiddleware, passwordController.changepassword);
+
+// users
 router.get("/getalluser", authMiddleware, userController.getalluser);
 router.get("/getuser/:id", authMiddleware, userController.getuser);
-router.get("/userprofile", authMiddleware, userController.userprofile);
-router.post("/uploadprofilepicture", authMiddleware, multer.single("avatar"), userController.uploadprofilepicture);
-router.put("/edituserprofile", authMiddleware, userController.edituserprofile);
+
+// profile
+router.get("/userprofile", authMiddleware, profileController.userprofile);
+router.put("/edituserprofile", authMiddleware, profileController.edituserprofile);
+router.post("/uploadprofilepicture", authMiddleware, multer.single("avatar"), profileController.uploadprofilepicture);
 
 module.exports = router;
