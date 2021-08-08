@@ -11,11 +11,11 @@ const User = require('../../schema/user.schema');
 
 exports.checkuserexists = (req, res) => {
 
-  User.find({ email: req.params.email })
-    .select('first_name last_name email phone verified role')
+  User.findOne({ email: req.params.email })
+    .select('_id email')
     .exec()
     .then(result => {
-      if (result.length >= 1) {
+      if (result) {
         let response = {
           status: status.success,
           message: userConstants.USER_EXISTS,
