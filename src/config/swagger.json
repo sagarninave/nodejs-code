@@ -3,7 +3,7 @@
   "info": {
     "description": "API Documentation",
     "version": "1.0.0",
-    "title": "Ganaraj-API"
+    "title": "gajavakra-API"
   },
   "host": "localhost:8000",
   "tags": [
@@ -18,10 +18,6 @@
     {
       "name": "User Management",
       "description": "User management APIs such as get user, get profile, edit profile, signup, signin etc"
-    },
-    {
-      "name": "Finance Management",
-      "description": ""
     }
   ],
   "schemes": [
@@ -426,8 +422,8 @@
           },
           {
             "in": "formData",
-            "name": "profilepicture",
-            "description": "Get user profile picture",
+            "name": "avatar",
+            "description": "Upload profile picture",
             "required": true,
             "type": "file"
           }
@@ -524,18 +520,10 @@
       "required": [
         "first_name",
         "last_name",
-        "avtar",
         "email",
-        "username",
         "password",
-        "phone",
-        "role",
-        "address",
-        "gender",
-        "dob",
-        "social",
-        "verified",
-        "created"
+        "phone_code",
+        "phone"
       ],
       "properties": {
         "first_name": {
@@ -546,60 +534,21 @@
           "type": "string",
           "example": "Ninave"
         }, 
-        "avatar": {
-          "type": "string",
-          "example": "https://assets.about.me/users/s/a/g/sagarninave_1560145999_17.jpg"
-        },
         "email": {
           "type": "string",
           "example": "sagarninave@gmail.com"
-        },
-        "username": {
-          "type": "string",
-          "example": "sagarninave"
         },
         "password": {
           "type": "string",
           "example": "Password@123"
         },
+        "phone_code": {
+          "type": "string",
+          "example": "+91"
+        },
         "phone": {
           "type": "string",
           "example": "9657445206"
-        },
-        "role": {
-          "type": "string",
-          "example": 3
-        },
-        "address": {
-          "type": "string",
-          "example": "timki, nagpur"
-        },
-        "gender": {
-          "type": "string",
-          "example": "male"
-        },
-        "dob": {
-          "type": "string",
-          "example": "08/06/1996"
-        },
-        "follows": [],
-        "follower": [],
-        "social": {
-          "type": "object",
-          "example": {
-            "facebook":"https://facebook.com/sagarninave1",
-            "twitter":"https://twitter.com/sagarninave1",
-            "instgram":"https://instgram.com/sagarninave1",
-            "linkedin":"https://linkedin.com/sagarninave1"
-          }
-        },
-        "verified": {
-          "type": "boolean",
-          "example": false
-        },
-        "created": {
-          "type": "string",
-          "example": "2020-12-23"
         }
       }
     },
