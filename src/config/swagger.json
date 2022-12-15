@@ -12,8 +12,8 @@
       "description": "Get local mongo database backup"
     },
     {
-      "name": "Open",
-      "description": "This API is used to send contact form, photogallery etc."
+      "name": "Auth",
+      "description": "User Authentication Management"
     },
     {
       "name": "User Management",
@@ -46,42 +46,10 @@
         }
       }
     },
-    "/api/open/contact": {
-      "post": {
-        "tags": [
-          "Open"
-        ],
-        "description": "Send contact data",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Contact",
-            "schema": {
-              "$ref": "#/definitions/contact"
-            }
-          }
-        ],
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "The request is OK"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
     "/api/user/signup": {
       "post": {
         "tags": [
-          "User Management"
+          "Auth"
         ],
         "description": "Create user",
         "parameters": [
@@ -113,7 +81,7 @@
     "/api/user/checkuserexists/{email}": {
       "get": {
         "tags": [
-          "User Management"
+          "Auth"
         ],
         "description": "Check user exists",
         "parameters": [
@@ -144,7 +112,7 @@
     "/api/user/verifyemail/{userId}": {
       "get": {
         "tags": [
-          "User Management"
+          "Auth"
         ],
         "description": "Email verification",
         "parameters": [
@@ -175,7 +143,7 @@
     "/api/user/login": {
       "post": {
         "tags": [
-          "User Management"
+          "Auth"
         ],
         "description": "Login user",
         "parameters": [
@@ -207,7 +175,7 @@
     "/api/user/forgetpassword/{email}": {
       "get": {
         "tags": [
-          "User Management"
+          "Auth"
         ],
         "description": "Send forget password link through email to set new password to user",
         "parameters": [
@@ -238,7 +206,7 @@
     "/api/user/setnewpassword": {
       "post": {
         "tags": [
-          "User Management"
+          "Auth"
         ],
         "description": "Setting new password by forget password link",
         "parameters": [
@@ -270,7 +238,7 @@
     "/api/user/changepassword": {
       "post": {
         "tags": [
-          "User Management"
+          "Auth"
         ],
         "description": "Change password",
         "parameters": [

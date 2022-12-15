@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
+const { multer } = require('../utils/multer');
 const authController = require('../controller/user/auth.controller');
 const passwordController = require('../controller/user/password.controller');
 const profileController = require('../controller/user/profile.controller');
 const userController = require('../controller/user/user.controller');
 const authMiddleware = require('../middleware/auth.middleware');
-const {multer} = require('../utils/multer');
 
 // auth route
 router.get("/checkuserexists/:email", authController.checkuserexists);
