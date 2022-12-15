@@ -19,6 +19,8 @@ app.use(bodyParser.json());
 app.options('*', cors());
 app.use(cors())
 
+app.use('/static', express.static('src/static'))
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, x-access-token");
