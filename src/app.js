@@ -4,20 +4,12 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 
-const { dbbackup } = require('./config/mongoDB');
-const userRoute = require('./routes/user.route');
-
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./config/swagger.json');
 const cloudinary = require('cloudinary').v2;
-
 cloudinary.config({
-  cloud_name: 'sagarninave',
-  api_key: '192778977315972',
-  api_secret: '9N9Xdldiq7fK9Xg5Nds5dtzGmCM'
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRETE
 })
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -35,15 +27,22 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/', (req, res) => {
-  res.send("Hello World! Gajwakra Backend API")
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./config/swagger.json');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.get('/', () => {
+  res.send("Welcome Backend API")
 })
+
+const { dbbackup } = require('./config/mongoDB');
+const userRoute = require('./routes/user.route');
 
 app.use('/dbbackup', dbbackup);
 app.use('/api/user', userRoute);
 
 app.use((req, res, next) => {
-  const error = new Error('Invalid endpoint');
+  const error = new Error('invalid endpoint');
   error.status = 404;
   next(error);
 })
