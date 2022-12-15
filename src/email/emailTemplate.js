@@ -49,10 +49,10 @@ const recentLoginTemplate = (emailData) => {
               <div style="margin: 8px; text-align: left;">
                 <p>Welcome to gajavakra!</p>
                 <p> You have recently logged in  </p>
-                <p class="info"> IP: ${emailData.ip} </p>
-                <p class="info"> System: ${emailData.system} </p>
-                <p class="info"> Time: ${emailData.time} </p>
-                <p class="info"> Location: ${emailData.location} </p>
+                <p class="info"> IP: ${emailData.ip || ""} </p>
+                <p class="info"> System: ${emailData.system || ""} </p>
+                <p class="info"> Time: ${emailData.time || ""} </p>
+                <p class="info"> Location: ${emailData.location || ""} </p>
                 <p style="text-align:center"> If you did not logged in then</p>
                 <button class="resetPassword"> 
                   <a href="#" class="resetPasswordLink" style="color:#fff;">

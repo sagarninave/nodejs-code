@@ -176,6 +176,17 @@ exports.login = (req, res) => {
             }
           })
             .then(result => {
+              let email = user.email;
+              let emailData = {
+                ip: '120.21.334.332',
+                system: "Sagar'sPC",
+                time: new Date(),
+                location: "New Delhi, India",
+              }
+              mailOptions.subject = "Recent Login"
+              mailOptions.to = email;
+              mailOptions.html = emailTemplate.recentLoginTemplate(emailData)
+              sendEmail(mailOptions);
               return res.status(httpStatus.success).json(response);
 
             }).catch(error => {

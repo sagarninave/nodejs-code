@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
-var fs = require('fs');
-var express = require('express');
+const express = require('express');
 const router = express.Router();
+const fs = require('fs');
 
 const user = require('../schema/user.schema');
 const forgetpassword = require('../schema/forgetpassword.schema');
-const mydbs=[
-  {databasename:"user", database:user},
-  {databasename:"forgetpassword", database:forgetpassword}
+
+const mydbs = [
+  { databasename: "user", database: user },
+  { databasename: "forgetpassword", database: forgetpassword }
 ]
-// mongoDBURL = "mongodb://127.0.0.1:27017/gajavakra";
-mongoDBURL = "mongodb+srv://gajavakraadminusername:1YV92lm3fZXqR7Zb@cluster0.ylnkg.mongodb.net/GAJAVAKRADATABASE?retryWrites=true&w=majority";
+
+const mongoDBURL = `${process.env.DB_TYPE}+${process.env.DB_SCHEME}://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.${process.env.DB_DIRECTORY}.${process.env.DB_PROVIDER}.${process.env.DB_DOMAIN}/${process.env.DB_NAME}`;
 
 mongoose.connect(mongoDBURL, {
   useCreateIndex: true,
@@ -32,43 +33,43 @@ mongoose.connection.on('disconnected', function () {
 });
 
 let backuppath = './dbbackup';
-let datapath = backuppath+'/data';
+let datapath = backuppath + '/data';
 
-function dbfolder(){
-  if (!fs.existsSync(backuppath)){
+function dbFolder() {
+  if (!fs.existsSync(backuppath)) {
     fs.mkdirSync(backuppath);
   }
 }
 
-function datafolder(){
-  if (!fs.existsSync(datapath)){
+function dataFolder() {
+  if (!fs.existsSync(datapath)) {
     fs.mkdirSync(datapath);
   }
 }
 
-function filefolder(dbfile){
-  let filepath = datapath+"/"+dbfile;
-  if (!fs.existsSync(filepath)){
+function fileFolder(dbfile) {
+  let filepath = datapath + "/" + dbfile;
+  if (!fs.existsSync(filepath)) {
     fs.mkdirSync(filepath);
   }
   return filepath;
 }
 
 const dbbackup = router.get('/', (req, res, next) => {
-  dbfolder();
-  datafolder();
+  dbFolder();
+  dataFolder();
   mydbs.map(db => {
     db.database.find().then(result => {
       let data = JSON.stringify(result, null, 2);
       let date = new Date();
-      let filename = db.databasename+"-"+
-                     date.getDate()+"-"+
-                     date.getMonth()+1+"-"+
-                     date.getFullYear()+"-"+
-                     date.getHours()+"-"+
-                     date.getMinutes()+"-"+
-                     date.getSeconds()+".json";
-      let filelocation = filefolder(db.databasename)+`/${filename}`;
+      let filename = db.databasename + "-" +
+        date.getDate() + "-" +
+        date.getMonth() + 1 + "-" +
+        date.getFullYear() + "-" +
+        date.getHours() + "-" +
+        date.getMinutes() + "-" +
+        date.getSeconds() + ".json";
+      let filelocation = fileFolder(db.databasename) + `/${filename}`;
       fs.writeFile(filelocation, data, function (err) {
         if (err) {
           throw err;
