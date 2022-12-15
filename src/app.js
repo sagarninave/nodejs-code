@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
+const path = require('path');
 
 const cloudinary = require('cloudinary').v2;
 cloudinary.config({
@@ -19,7 +20,7 @@ app.use(bodyParser.json());
 app.options('*', cors());
 app.use(cors())
 
-app.use('/static', express.static('src/static'))
+app.use('/static', express.static(path.join(__dirname, 'static')))
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -39,7 +40,7 @@ const { dbbackup } = require('./config/mongoDB');
 const userRoute = require('./routes/user.route');
 
 app.get('/', (req, res) => {
-  res.send("Welcome to Backend APIs")
+  res.sendFile( __dirname+"/static/welcome.html")
 })
 
 app.use('/dbbackup', dbbackup);
