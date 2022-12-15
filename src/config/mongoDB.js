@@ -21,15 +21,15 @@ mongoose.connect(mongoDBURL, {
 });
 
 mongoose.connection.on('connected', function () {
-  console.log('Mongoose default connection open on ' + mongoDBURL);
+  console.log(`MongoDB connected to ${process.env.DB_NAME} database`);
 });
 
 mongoose.connection.on('error', function (err) {
-  console.log('Mongoose default connection error: ' + err);
+  console.log('Mongoose connection error: ' + err);
 });
 
 mongoose.connection.on('disconnected', function () {
-  console.log('Mongoose default connection disconnected');
+  console.log('Mongoose connection disconnected');
 });
 
 let backuppath = './dbbackup';

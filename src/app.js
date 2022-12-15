@@ -12,8 +12,10 @@ cloudinary.config({
 })
 
 app.use(morgan('dev'));
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
 app.options('*', cors());
 app.use(cors())
 
@@ -31,18 +33,18 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./config/swagger.json');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get('/', () => {
-  res.send("Welcome Backend API")
-})
-
 const { dbbackup } = require('./config/mongoDB');
 const userRoute = require('./routes/user.route');
+
+app.get('/', (req, res) => {
+  res.send("Welcome to Backend APIs")
+})
 
 app.use('/dbbackup', dbbackup);
 app.use('/api/user', userRoute);
 
 app.use((req, res, next) => {
-  const error = new Error('invalid endpoint');
+  const error = new Error('Invalid endpoint');
   error.status = 404;
   next(error);
 })
