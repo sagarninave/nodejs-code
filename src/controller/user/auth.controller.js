@@ -6,7 +6,6 @@ const { mailOptions, sendEmail } = require('../../email/emailConfig');
 const emailTemplate = require('../../email/emailTemplate');
 const passwordHash = require('password-hash');
 const jwt = require('jsonwebtoken');
-const jwtConst = require('../../constants/jwt');
 const User = require('../../schema/user.schema');
 
 exports.checkuserexists = (req, res) => {
@@ -153,8 +152,8 @@ exports.login = (req, res) => {
             role: result.role,
           };
 
-          let accessToken = jwt.sign(user, jwtConst.accessSecretKey, { expiresIn: jwtConst.accessKeyExpiresIn });
-          let refreshToken = jwt.sign(user, jwtConst.refreshSecretKey, { expiresIn: jwtConst.refreshKeyExpiresIn });
+          let accessToken = jwt.sign(user, process.env.ACCESS_KEY, { expiresIn: process.env.ACCESS_KEY_EXPIRE_IN });
+          let refreshToken = jwt.sign(user, process.env.REFRESH_KEY, { expiresIn: process.env.REFRESH_KEY });
 
           let response = {
             status: status.success,
