@@ -1,5 +1,5 @@
 const { httpStatus, status } = require('../../constants/httpresponse');
-const { userConstants } = require('../../constants/message');
+const { message } = require('../../constants/message');
 const User = require('../../schema/user.schema');
 
 exports.getalluser = (req, res) => {
@@ -10,7 +10,7 @@ exports.getalluser = (req, res) => {
       if (result) {
         let response = {
           status: status.success,
-          message: userConstants.USERS,
+          message: message.USERS,
           user: result
         }
         return res.status(httpStatus.success).json(response);
@@ -18,7 +18,7 @@ exports.getalluser = (req, res) => {
       else {
         let response = {
           status: status.failed,
-          message: userConstants.USER_NOT_EXISTS
+          message: message.USER_NOT_EXISTS
         }
         return res.status(httpStatus.success).json(response);
       }
@@ -39,7 +39,7 @@ exports.getuser = (req, res) => {
       if (result) {
         let response = {
           status: status.success,
-          message: userConstants.USER_FOUND,
+          message: message.USER_FOUND,
           user: result
         }
         return res.status(httpStatus.success).json(response);
@@ -47,7 +47,7 @@ exports.getuser = (req, res) => {
       else {
         let response = {
           status: status.failed,
-          message: userConstants.USER_NOT_EXISTS
+          message: message.USER_NOT_EXISTS
         }
         return res.status(httpStatus.success).json(response);
       }

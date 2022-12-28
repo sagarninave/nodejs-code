@@ -1,5 +1,5 @@
 const { httpStatus, status } = require('../../constants/httpresponse');
-const { userConstants } = require('../../constants/message');
+const { message } = require('../../constants/message');
 const User = require('../../schema/user.schema');
 
 exports.userprofile = (req, res) => {
@@ -11,7 +11,7 @@ exports.userprofile = (req, res) => {
       if (result) {
         let response = {
           status: status.success,
-          message: userConstants.USER_PROFILE,
+          message: message.USER_PROFILE,
           user: result
         }
         return res.status(httpStatus.success).json(response);
@@ -19,7 +19,7 @@ exports.userprofile = (req, res) => {
       else {
         let response = {
           status: status.failed,
-          message: userConstants.USER_NOT_EXISTS
+          message: message.USER_NOT_EXISTS
         }
         return res.status(httpStatus.success).json(response);
       }
@@ -49,14 +49,14 @@ exports.edituserprofile = (req, res) => {
       if (result && result.ok == 1) {
         let response = {
           status: status.success,
-          message: userConstants.USER_PROFILE_UPDATE
+          message: message.USER_PROFILE_UPDATE
         }
         res.status(httpStatus.success).json(response);
       }
       else {
         let response = {
           status: status.failed,
-          message: userConstants.USER_PROFILE_UPDATE_FAILED
+          message: message.USER_PROFILE_UPDATE_FAILED
         }
         return res.status(httpStatus.success).json(response);
       }
@@ -75,7 +75,7 @@ exports.uploadprofilepicture = async (req, res) => {
   if (req.file.size > 1000000) {
     let response = {
       status: status.failed,
-      message: userConstants.PROFILE_PHOTO_SIZE
+      message: message.PROFILE_PHOTO_SIZE
     }
     return res.status(httpStatus.internalServerError).json(response);
   }
@@ -87,14 +87,14 @@ exports.uploadprofilepicture = async (req, res) => {
           if (result) {
             let response = {
               status: status.success,
-              message: userConstants.PROFILE_PHOTO_UPLOAD
+              message: message.PROFILE_PHOTO_UPLOAD
             }
             res.status(httpStatus.success).json(response);
           }
           else {
             let response = {
               status: status.failed,
-              message: userConstants.PROFILE_PHOTO_UPLOAD_FAILED
+              message: message.PROFILE_PHOTO_UPLOAD_FAILED
             }
             res.status(httpStatus.success).json(response);
           }

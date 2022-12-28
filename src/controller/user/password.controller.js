@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { httpStatus, status } = require('../../constants/httpresponse');
-const { userConstants } = require('../../constants/message');
+const { message } = require('../../constants/message');
 const { mailOptions, sendEmail } = require('../../email/emailConfig');
 const emailTemplate = require('../../email/emailTemplate');
 const passwordHash = require('password-hash');
@@ -30,7 +30,7 @@ exports.forgetpassword = (req, res) => {
                     sendEmail(mailOptions);
                     let response = {
                       status: status.success,
-                      message: userConstants.FORGET_PASSWORD,
+                      message: message.FORGET_PASSWORD,
                     };
                     res.status(httpStatus.success).json(response);
                   }
@@ -58,7 +58,7 @@ exports.forgetpassword = (req, res) => {
                     sendEmail(mailOptions);
                     let response = {
                       status: status.success,
-                      message: userConstants.FORGET_PASSWORD,
+                      message: message.FORGET_PASSWORD,
                     };
                     res.status(httpStatus.success).json(response);
                   }
@@ -75,7 +75,7 @@ exports.forgetpassword = (req, res) => {
       else {
         let response = {
           status: status.failed,
-          message: userConstants.USER_NOT_EXISTS
+          message: message.USER_NOT_EXISTS
         }
         return res.status(httpStatus.success).json(response);
       }
@@ -112,7 +112,7 @@ exports.setnewpassword = (req, res) => {
               if (result) {
                 let response = {
                   status: status.success,
-                  message: userConstants.PASSWORD_CHANGED
+                  message: message.PASSWORD_CHANGED
                 }
                 res.status(httpStatus.success).json(response);
               }
@@ -120,7 +120,7 @@ exports.setnewpassword = (req, res) => {
             .catch(error => {
               let errorResponse = {
                 status: errorMessage.error,
-                message: userConstants.PASSWORD_CHANGED_FAILED
+                message: message.PASSWORD_CHANGED_FAILED
               };
               res.status(200).json(errorResponse);
             });
@@ -128,7 +128,7 @@ exports.setnewpassword = (req, res) => {
         else {
           let response = {
             status: status.failed,
-            message: userConstants.FORGET_PASSWORD_CODE_MISMATCH
+            message: message.FORGET_PASSWORD_CODE_MISMATCH
           }
           res.status(httpStatus.success).json(response);
         }
@@ -136,7 +136,7 @@ exports.setnewpassword = (req, res) => {
       else {
         let response = {
           status: status.failed,
-          message: userConstants.FORGET_PASSWORD_LINK_RESEND
+          message: message.FORGET_PASSWORD_LINK_RESEND
         }
         res.status(httpStatus.success).json(response);
       }
@@ -168,14 +168,14 @@ exports.changepassword = (req, res) => {
                 if (result) {
                   let response = {
                     status: status.success,
-                    message: userConstants.PASSWORD_CHANGED
+                    message: message.PASSWORD_CHANGED
                   }
                   res.status(httpStatus.success).json(response);
                 }
                 else {
                   let response = {
                     status: status.failed,
-                    message: userConstants.PASSWORD_NOT_MATCHED
+                    message: message.PASSWORD_NOT_MATCHED
                   }
                   res.status(httpStatus.success).json(response);
                 }
@@ -190,7 +190,7 @@ exports.changepassword = (req, res) => {
           else {
             let response = {
               status: status.failed,
-              message: userConstants.PASSWORD_NOT_MATCHED
+              message: message.PASSWORD_NOT_MATCHED
             }
             res.status(httpStatus.success).json(response);
           }
@@ -198,7 +198,7 @@ exports.changepassword = (req, res) => {
         else {
           let response = {
             status: status.failed,
-            message: userConstants.OLD_PASSWORD_MISMATCH
+            message: message.OLD_PASSWORD_MISMATCH
           }
           res.status(httpStatus.success).json(response);
         }
@@ -206,7 +206,7 @@ exports.changepassword = (req, res) => {
       else {
         let response = {
           status: status.failed,
-          message: userConstants.USER_NOT_EXISTS
+          message: message.USER_NOT_EXISTS
         }
         res.status(httpStatus.success).json(response);
       }

@@ -1,9 +1,6 @@
-const invalidConstants = {
+const message = {
   INVALID_EMAIL: "Email is invalid",
-  INVALID_PASSWORD: "Password is invalid"
-}
-
-const userConstants = {
+  INVALID_PASSWORD: "Password is invalid",
   USER_FOUND: "User found",
   USER_NOT_EXISTS: "User does not exists",
   USER_EXISTS: "User exists with this email",
@@ -35,13 +32,12 @@ const userConstants = {
   PROFILE_PHOTO_SIZE: "File size should not more than 1 MB"
 };
 
-const openConstants = {
-  MESSAGE_SEND: "message send successfully",
-  MESSAGE_SEND_FAILED: "message does not send",
-};
+const regex = { 
+  EMAIL_RE: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
+  PASSWORD_RE: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+}
+
 
 module.exports = {
-  invalidConstants,
-  userConstants,
-  openConstants
+  message, regex
 };

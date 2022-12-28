@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const { httpStatus, status } = require('../../constants/httpresponse');
-const { invalidConstants, userConstants } = require('../../constants/message');
-const { credentials } = require('../../constants/regex');
+const { message, regex } = require('../../constants/message');
 const { mailOptions, sendEmail } = require('../../email/emailConfig');
 const emailTemplate = require('../../email/emailTemplate');
 const passwordHash = require('password-hash');
@@ -17,7 +16,7 @@ exports.checkuserexists = (req, res) => {
       if (result) {
         let response = {
           status: status.success,
-          message: userConstants.USER_EXISTS,
+          message: message.USER_EXISTS,
           data: result
         }
         return res.status(httpStatus.success).json(response);
@@ -25,7 +24,7 @@ exports.checkuserexists = (req, res) => {
       else {
         let response = {
           status: status.failed,
-          message: userConstants.USER_NOT_EXISTS
+          message: message.USER_NOT_EXISTS
         }
         return res.status(httpStatus.success).json(response);
       }
@@ -42,16 +41,16 @@ exports.signup = (req, res) => {
 
   let userId = new mongoose.Types.ObjectId();
 
-  if (!credentials.EMAIL_RE.test(req.body.email)) {
+  if (!regex.EMAIL.test(req.body.email)) {
     return res.status(httpStatus.internalServerError).json({
       status: status.failed,
-      message: invalidConstants.INVALID_EMAIL
+      message: message.INVALID_EMAIL
     });
   }
-  else if (!credentials.PASSWORD_RE.test(req.body.password)) {
+  else if (!regex.PASSWORD.test(req.body.password)) {
     return res.status(httpStatus.internalServerError).json({
       status: status.failed,
-      message: invalidConstants.INVALID_PASSWORD
+      message: message.INVALID_PASSWORD
     });
   }
 
@@ -61,7 +60,7 @@ exports.signup = (req, res) => {
       if (result.length >= 1) {
         let response = {
           status: status.failed,
-          message: userConstants.USER_EXISTS
+          message: message.USER_EXISTS
         }
         return res.status(httpStatus.success).json(response);
       }
@@ -87,7 +86,7 @@ exports.signup = (req, res) => {
 
               let response = {
                 status: status.success,
-                message: userConstants.USER_REGISTERATION,
+                message: message.USER_REGISTERATION,
               };
               res.status(httpStatus.created).json(response);
             }
@@ -111,14 +110,14 @@ exports.verifyemail = (req, res) => {
       if (result) {
         let response = {
           status: status.success,
-          message: userConstants.EMAIL_VERIFIED
+          message: message.EMAIL_VERIFIED
         }
         res.status(httpStatus.success).json(response);
       }
       else {
         let response = {
           status: status.failed,
-          message: userConstants.USER_NOT_EXISTS + ' and ' + userConstants.EMAIL_VERIFICATION_FAILED
+          message: message.USER_NOT_EXISTS + ' and ' + message.EMAIL_VERIFICATION_FAILED
         }
         return res.status(httpStatus.success).json(response);
       }
@@ -157,7 +156,7 @@ exports.login = (req, res) => {
 
           let response = {
             status: status.success,
-            message: userConstants.LOGIN,
+            message: message.LOGIN,
             user: {
               id: result._id,
               first_name: result.first_name,
@@ -198,7 +197,7 @@ exports.login = (req, res) => {
         else {
           let response = {
             status: status.failed,
-            message: userConstants.WRONG_PASSWORD
+            message: message.WRONG_PASSWORD
           }
           return res.status(httpStatus.success).json(response);
         }
@@ -206,7 +205,7 @@ exports.login = (req, res) => {
       else {
         let response = {
           status: status.failed,
-          message: userConstants.USER_NOT_EXISTS
+          message: message.USER_NOT_EXISTS
         }
         return res.status(httpStatus.success).json(response);
       }
@@ -234,7 +233,7 @@ exports.recentloginemailsend = (req, res) => {
 
   let response = {
     status: status.success,
-    message: userConstants.LOGIN_EMAIL_SEND
+    message: message.LOGIN_EMAIL_SEND
   }
   return res.status(httpStatus.success).json(response);
 }
