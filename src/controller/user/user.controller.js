@@ -1,5 +1,5 @@
 const { httpStatus, status } = require('../../constants/httpresponse');
-const { message } = require('../../constants/message');
+const { message } = require('../../constants');
 const User = require('../../schema/user.schema');
 
 exports.getalluser = (req, res) => {

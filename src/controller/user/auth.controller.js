@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { httpStatus, status } = require('../../constants/httpresponse');
-const { message, regex } = require('../../constants/message');
+const { message, regex } = require('../../constants');
 const { mailOptions, sendEmail } = require('../../email/emailConfig');
 const emailTemplate = require('../../email/emailTemplate');
 const passwordHash = require('password-hash');
