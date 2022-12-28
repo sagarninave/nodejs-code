@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const { httpStatus, status } = require('../../constants/httpresponse');
-const { message } = require('../../constants');
+const { message, statusCode } = require('../../constants');
 const { mailOptions, sendEmail } = require('../../email/emailConfig');
 const emailTemplate = require('../../email/emailTemplate');
 const passwordHash = require('password-hash');
@@ -29,17 +28,17 @@ exports.forgetpassword = (req, res) => {
                     mailOptions.html = emailTemplate.forgetPasswordTemplate(link);
                     sendEmail(mailOptions);
                     let response = {
-                      status: status.success,
+                      status: message.SUCCESS,
                       message: message.FORGET_PASSWORD,
                     };
-                    res.status(httpStatus.success).json(response);
+                    res.status(statusCode.OK).json(response);
                   }
                 })
                 .catch(error => {
                   let errorResponse = {
-                    error: status.somethingWentWrong
+                    error: message.WRONG
                   };
-                  res.status(httpStatus.internalServerError).json(errorResponse);
+                  res.status(statusCode.INTERNAL_SERVER_ERROR).json(errorResponse);
                 });
             }
             else {
@@ -57,34 +56,34 @@ exports.forgetpassword = (req, res) => {
                     mailOptions.html = emailTemplate.forgetPasswordTemplate(link);
                     sendEmail(mailOptions);
                     let response = {
-                      status: status.success,
+                      status: message.SUCCESS,
                       message: message.FORGET_PASSWORD,
                     };
-                    res.status(httpStatus.success).json(response);
+                    res.status(statusCode.OK).json(response);
                   }
                 })
                 .catch(error => {
                   let errorResponse = {
-                    error: status.somethingWentWrong
+                    error: message.WRONG
                   };
-                  res.status(httpStatus.internalServerError).json(errorResponse);
+                  res.status(statusCode.INTERNAL_SERVER_ERROR).json(errorResponse);
                 });
             }
           })
       }
       else {
         let response = {
-          status: status.failed,
+          status: message.FAILED,
           message: message.USER_NOT_EXISTS
         }
-        return res.status(httpStatus.success).json(response);
+        return res.status(statusCode.OK).json(response);
       }
     })
     .catch(error => {
       let errorResponse = {
-        error: status.somethingWentWrong
+        error: message.WRONG
       };
-      res.status(httpStatus.internalServerError).json(errorResponse);
+      res.status(statusCode.INTERNAL_SERVER_ERROR).json(errorResponse);
     });
 };
 
@@ -111,10 +110,10 @@ exports.setnewpassword = (req, res) => {
             .then(result => {
               if (result) {
                 let response = {
-                  status: status.success,
+                  status: message.SUCCESS,
                   message: message.PASSWORD_CHANGED
                 }
-                res.status(httpStatus.success).json(response);
+                res.status(statusCode.OK).json(response);
               }
             })
             .catch(error => {
@@ -127,23 +126,23 @@ exports.setnewpassword = (req, res) => {
         }
         else {
           let response = {
-            status: status.failed,
+            status: message.FAILED,
             message: message.FORGET_PASSWORD_CODE_MISMATCH
           }
-          res.status(httpStatus.success).json(response);
+          res.status(statusCode.OK).json(response);
         }
       }
       else {
         let response = {
-          status: status.failed,
+          status: message.FAILED,
           message: message.FORGET_PASSWORD_LINK_RESEND
         }
-        res.status(httpStatus.success).json(response);
+        res.status(statusCode.OK).json(response);
       }
     })
     .catch(error => {
       let errorResponse = {
-        error: status.somethingWentWrong
+        error: message.WRONG
       };
       res.status(200).json(errorResponse);
     })
@@ -167,53 +166,53 @@ exports.changepassword = (req, res) => {
               .then(result => {
                 if (result) {
                   let response = {
-                    status: status.success,
+                    status: message.SUCCESS,
                     message: message.PASSWORD_CHANGED
                   }
-                  res.status(httpStatus.success).json(response);
+                  res.status(statusCode.OK).json(response);
                 }
                 else {
                   let response = {
-                    status: status.failed,
+                    status: message.FAILED,
                     message: message.PASSWORD_NOT_MATCHED
                   }
-                  res.status(httpStatus.success).json(response);
+                  res.status(statusCode.OK).json(response);
                 }
               })
               .catch(error => {
                 let errorResponse = {
-                  error: status.somethingWentWrong
+                  error: message.WRONG
                 };
                 res.status(500).json(errorResponse);
               })
           }
           else {
             let response = {
-              status: status.failed,
+              status: message.FAILED,
               message: message.PASSWORD_NOT_MATCHED
             }
-            res.status(httpStatus.success).json(response);
+            res.status(statusCode.OK).json(response);
           }
         }
         else {
           let response = {
-            status: status.failed,
+            status: message.FAILED,
             message: message.OLD_PASSWORD_MISMATCH
           }
-          res.status(httpStatus.success).json(response);
+          res.status(statusCode.OK).json(response);
         }
       }
       else {
         let response = {
-          status: status.failed,
+          status: message.FAILED,
           message: message.USER_NOT_EXISTS
         }
-        res.status(httpStatus.success).json(response);
+        res.status(statusCode.OK).json(response);
       }
     })
     .catch(error => {
       let errorResponse = {
-        error: status.somethingWentWrong
+        error: message.WRONG
       };
       res.status(500).json(errorResponse);
     })

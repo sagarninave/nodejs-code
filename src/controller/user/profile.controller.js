@@ -1,5 +1,4 @@
-const { httpStatus, status } = require('../../constants/httpresponse');
-const { message } = require('../../constants');
+const { message, statusCode } = require('../../constants');
 const User = require('../../schema/user.schema');
 
 exports.userprofile = (req, res) => {
@@ -10,25 +9,25 @@ exports.userprofile = (req, res) => {
     .then(result => {
       if (result) {
         let response = {
-          status: status.success,
+          status: message.SUCCESS,
           message: message.USER_PROFILE,
           user: result
         }
-        return res.status(httpStatus.success).json(response);
+        return res.status(statusCode.OK).json(response);
       }
       else {
         let response = {
-          status: status.failed,
+          status: message.FAILED,
           message: message.USER_NOT_EXISTS
         }
-        return res.status(httpStatus.success).json(response);
+        return res.status(statusCode.OK).json(response);
       }
     })
     .catch(error => {
       let errorResponse = {
-        error: status.somethingWentWrong
+        error: message.WRONG
       };
-      res.status(httpStatus.internalServerError).json(errorResponse);
+      res.status(statusCode.INTERNAL_SERVER_ERROR).json(errorResponse);
     });
 };
 
@@ -48,23 +47,23 @@ exports.edituserprofile = (req, res) => {
     .then(result => {
       if (result && result.ok == 1) {
         let response = {
-          status: status.success,
+          status: message.SUCCESS,
           message: message.USER_PROFILE_UPDATE
         }
-        res.status(httpStatus.success).json(response);
+        res.status(statusCode.OK).json(response);
       }
       else {
         let response = {
-          status: status.failed,
+          status: message.FAILED,
           message: message.USER_PROFILE_UPDATE_FAILED
         }
-        return res.status(httpStatus.success).json(response);
+        return res.status(statusCode.OK).json(response);
       }
     })
     .catch(error => {
       let errorResponse = {
-        status: status.failed,
-        message: status.somethingWentWrong
+        status: message.FAILED,
+        message: message.WRONG
       };
       res.status(200).json(errorResponse);
     });
@@ -74,10 +73,10 @@ exports.uploadprofilepicture = async (req, res) => {
 
   if (req.file.size > 1000000) {
     let response = {
-      status: status.failed,
+      status: message.FAILED,
       message: message.PROFILE_PHOTO_SIZE
     }
-    return res.status(httpStatus.internalServerError).json(response);
+    return res.status(statusCode.INTERNAL_SERVER_ERROR).json(response);
   }
   else {
     try {
@@ -86,22 +85,22 @@ exports.uploadprofilepicture = async (req, res) => {
         .then(result => {
           if (result) {
             let response = {
-              status: status.success,
+              status: message.SUCCESS,
               message: message.PROFILE_PHOTO_UPLOAD
             }
-            res.status(httpStatus.success).json(response);
+            res.status(statusCode.OK).json(response);
           }
           else {
             let response = {
-              status: status.failed,
+              status: message.FAILED,
               message: message.PROFILE_PHOTO_UPLOAD_FAILED
             }
-            res.status(httpStatus.success).json(response);
+            res.status(statusCode.OK).json(response);
           }
         })
         .catch(error => {
           let errorResponse = {
-            error: status.somethingWentWrong
+            error: message.WRONG
           };
           res.status(200).json(errorResponse);
         })

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const { httpStatus, status } = require('../../constants/httpresponse');
-const { message, regex } = require('../../constants');
+const { message, regex, statusCode } = require('../../constants');
 const { mailOptions, sendEmail } = require('../../email/emailConfig');
 const emailTemplate = require('../../email/emailTemplate');
 const passwordHash = require('password-hash');
@@ -15,25 +14,25 @@ exports.checkuserexists = (req, res) => {
     .then(result => {
       if (result) {
         let response = {
-          status: status.success,
+          status: message.SUCCESS,
           message: message.USER_EXISTS,
           data: result
         }
-        return res.status(httpStatus.success).json(response);
+        return res.status(statusCode.OK).json(response);
       }
       else {
         let response = {
-          status: status.failed,
+          status: message.FAILED,
           message: message.USER_NOT_EXISTS
         }
-        return res.status(httpStatus.success).json(response);
+        return res.status(statusCode.OK).json(response);
       }
     })
     .catch(error => {
       let errorResponse = {
-        error: status.somethingWentWrong
+        error: message.WRONG
       };
-      res.status(httpStatus.internalServerError).json(errorResponse);
+      res.status(statusCode.INTERNAL_SERVER_ERROR).json(errorResponse);
     });
 };
 
@@ -42,14 +41,14 @@ exports.signup = (req, res) => {
   let userId = new mongoose.Types.ObjectId();
 
   if (!regex.EMAIL.test(req.body.email)) {
-    return res.status(httpStatus.internalServerError).json({
-      status: status.failed,
+    return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+      status: message.FAILED,
       message: message.INVALID_EMAIL
     });
   }
   else if (!regex.PASSWORD.test(req.body.password)) {
-    return res.status(httpStatus.internalServerError).json({
-      status: status.failed,
+    return res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+      status: message.FAILED,
       message: message.INVALID_PASSWORD
     });
   }
@@ -59,10 +58,10 @@ exports.signup = (req, res) => {
     .then(result => {
       if (result.length >= 1) {
         let response = {
-          status: status.failed,
+          status: message.FAILED,
           message: message.USER_EXISTS
         }
-        return res.status(httpStatus.success).json(response);
+        return res.status(statusCode.OK).json(response);
       }
       else {
         const user = new User({
@@ -85,17 +84,17 @@ exports.signup = (req, res) => {
               sendEmail(mailOptions);
 
               let response = {
-                status: status.success,
+                status: message.SUCCESS,
                 message: message.USER_REGISTERATION,
               };
-              res.status(httpStatus.created).json(response);
+              res.status(statusCode.CREATED).json(response);
             }
           })
           .catch(error => {
             let errorResponse = {
-              error: status.somethingWentWrong
+              error: message.WRONG
             };
-            res.status(httpStatus.internalServerError).json(errorResponse);
+            res.status(statusCode.INTERNAL_SERVER_ERROR).json(errorResponse);
           });
       }
     })
@@ -109,24 +108,24 @@ exports.verifyemail = (req, res) => {
     .then(result => {
       if (result) {
         let response = {
-          status: status.success,
+          status: message.SUCCESS,
           message: message.EMAIL_VERIFIED
         }
-        res.status(httpStatus.success).json(response);
+        res.status(statusCode.OK).json(response);
       }
       else {
         let response = {
-          status: status.failed,
+          status: message.FAILED,
           message: message.USER_NOT_EXISTS + ' and ' + message.EMAIL_VERIFICATION_FAILED
         }
-        return res.status(httpStatus.success).json(response);
+        return res.status(statusCode.OK).json(response);
       }
     }).catch(error => {
       let errorResponse = {
         status: status.error,
-        message: status.somethingWentWrong
+        message: message.WRONG
       };
-      res.status(httpStatus.internalServerError).json(errorResponse);
+      res.status(statusCode.INTERNAL_SERVER_ERROR).json(errorResponse);
     });
 };
 
@@ -155,7 +154,7 @@ exports.login = (req, res) => {
           let refreshToken = jwt.sign(user, process.env.REFRESH_KEY, { expiresIn: process.env.REFRESH_KEY });
 
           let response = {
-            status: status.success,
+            status: message.SUCCESS,
             message: message.LOGIN,
             user: {
               id: result._id,
@@ -185,36 +184,36 @@ exports.login = (req, res) => {
               mailOptions.to = email;
               mailOptions.html = emailTemplate.recentLoginTemplate(emailData)
               sendEmail(mailOptions);
-              return res.status(httpStatus.success).json(response);
+              return res.status(statusCode.OK).json(response);
 
             }).catch(error => {
               let errorResponse = {
-                error: status.somethingWentWrong
+                error: message.WRONG
               };
-              res.status(httpStatus.internalServerError).json(errorResponse);
+              res.status(statusCode.INTERNAL_SERVER_ERROR).json(errorResponse);
             });
         }
         else {
           let response = {
-            status: status.failed,
+            status: message.FAILED,
             message: message.WRONG_PASSWORD
           }
-          return res.status(httpStatus.success).json(response);
+          return res.status(statusCode.OK).json(response);
         }
       }
       else {
         let response = {
-          status: status.failed,
+          status: message.FAILED,
           message: message.USER_NOT_EXISTS
         }
-        return res.status(httpStatus.success).json(response);
+        return res.status(statusCode.OK).json(response);
       }
     })
     .catch(error => {
       let errorResponse = {
-        error: status.somethingWentWrong
+        error: message.WRONG
       };
-      res.status(httpStatus.internalServerError).json(errorResponse);
+      res.status(statusCode.INTERNAL_SERVER_ERROR).json(errorResponse);
     });
 };
 
@@ -232,8 +231,8 @@ exports.recentloginemailsend = (req, res) => {
   sendEmail(mailOptions);
 
   let response = {
-    status: status.success,
+    status: message.SUCCESS,
     message: message.LOGIN_EMAIL_SEND
   }
-  return res.status(httpStatus.success).json(response);
+  return res.status(statusCode.OK).json(response);
 }

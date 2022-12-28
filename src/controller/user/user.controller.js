@@ -1,5 +1,4 @@
-const { httpStatus, status } = require('../../constants/httpresponse');
-const { message } = require('../../constants');
+const { message, statusCode } = require('../../constants');
 const User = require('../../schema/user.schema');
 
 exports.getalluser = (req, res) => {
@@ -9,25 +8,25 @@ exports.getalluser = (req, res) => {
     .then(result => {
       if (result) {
         let response = {
-          status: status.success,
+          status: message.SUCCESS,
           message: message.USERS,
           user: result
         }
-        return res.status(httpStatus.success).json(response);
+        return res.status(statusCode.OK).json(response);
       }
       else {
         let response = {
-          status: status.failed,
+          status: message.FAILED,
           message: message.USER_NOT_EXISTS
         }
-        return res.status(httpStatus.success).json(response);
+        return res.status(statusCode.OK).json(response);
       }
     })
     .catch(error => {
       let errorResponse = {
-        error: status.somethingWentWrong
+        error: message.WRONG
       };
-      res.status(httpStatus.internalServerError).json(errorResponse);
+      res.status(statusCode.INTERNAL_SERVER_ERROR).json(errorResponse);
     });
 };
 
@@ -38,24 +37,24 @@ exports.getuser = (req, res) => {
     .then(result => {
       if (result) {
         let response = {
-          status: status.success,
+          status: message.SUCCESS,
           message: message.USER_FOUND,
           user: result
         }
-        return res.status(httpStatus.success).json(response);
+        return res.status(statusCode.OK).json(response);
       }
       else {
         let response = {
-          status: status.failed,
+          status: message.FAILED,
           message: message.USER_NOT_EXISTS
         }
-        return res.status(httpStatus.success).json(response);
+        return res.status(statusCode.OK).json(response);
       }
     })
     .catch(error => {
       let errorResponse = {
-        error: status.somethingWentWrong
+        error: message.WRONG
       };
-      res.status(httpStatus.internalServerError).json(errorResponse);
+      res.status(statusCode.INTERNAL_SERVER_ERROR).json(errorResponse);
     });
 };

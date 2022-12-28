@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const httpStatus = require('./../constants/httpresponse');
+const { message, statusCode } = require('../../src/constants');
 
 module.exports = (req, res, next) => {
   try {
@@ -7,10 +7,10 @@ module.exports = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.ACCESS_KEY);
     req.user = decoded;
     next();
-  } 
+  }
   catch (error) {
-    res.status(httpStatus.internalServerError).json({
-      message: "Unauthenticated User"
+    res.status(statusCode.INTERNAL_SERVER_ERROR).json({
+      message: message.UNAUTHENTICATED
     });
   }
 }
