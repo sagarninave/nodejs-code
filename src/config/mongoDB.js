@@ -15,7 +15,7 @@ const mydbs = [
 ]
 
 /* Creating a URL to connect to the MongoDB database. */
-const mongoDBURL = `${process.env.DB_TYPE}+${process.env.DB_SCHEME}://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.${process.env.DB_DIRECTORY}.${process.env.DB_PROVIDER}.${process.env.DB_DOMAIN}/${process.env.DB_NAME}`;
+const mongoDBURL = process.env.MONGO_DB_URI;
 
 /* Connecting to the MongoDB database. */
 mongoose.connect(mongoDBURL, {
@@ -27,7 +27,7 @@ mongoose.connect(mongoDBURL, {
 
 /* This is a callback function that is called when the connection to the MongoDB database is successful. */
 mongoose.connection.on('connected', function () {
-  console.log(`MongoDB connected to ${process.env.DB_NAME} database`);
+  console.log(`MongoDB connected to ${process.env.MONGO_DB_URI}`);
 });
 
 /* This is a callback function that is called when there is an error in the connection to the MongoDB database. */
