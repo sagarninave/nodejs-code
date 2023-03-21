@@ -1,3 +1,8 @@
+/**
+ * It returns a string of HTML code that will be used to send an email to the user.
+ * @param emailData - {
+ * @returns A string
+ */
 const recentLoginTemplate = (emailData) => {
   return `
     <!doctype html>
@@ -67,6 +72,11 @@ const recentLoginTemplate = (emailData) => {
     </html>`;
 }
 
+/**
+ * It returns a HTML template which is used to send an email to the user
+ * @param link - The link that the user will click on to verify their email address.
+ * @returns A string of HTML code.
+ */
 const emailVerificationTemplate = (link) => {
   return `<!doctype html>
           <html lang="en">
@@ -143,6 +153,11 @@ const emailVerificationTemplate = (link) => {
           </html>`;
 }
 
+/**
+ * It returns a HTML template with a link to reset password.
+ * @param link - The link to the reset password page.
+ * @returns A string of HTML code.
+ */
 const forgetPasswordTemplate = (link) => {
   return `<!doctype html>
           <html lang="en">

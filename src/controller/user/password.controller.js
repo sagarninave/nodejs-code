@@ -6,6 +6,7 @@ const passwordHash = require('password-hash');
 const User = require('../../schema/user.schema');
 const forgetPassword = require('../../schema/forgetpassword.schema');
 
+/* This function is used to send a link to the user's email address to reset the password. */
 exports.forgetpassword = (req, res) => {
 
   let useremail = req.params.email;
@@ -87,6 +88,7 @@ exports.forgetpassword = (req, res) => {
     });
 };
 
+/* This function is used to set a new password for the user. */
 exports.setnewpassword = (req, res) => {
 
   let user_code = req.body.code;
@@ -148,6 +150,7 @@ exports.setnewpassword = (req, res) => {
     })
 };
 
+/* This function is used to change the password of the user. */
 exports.changepassword = (req, res) => {
 
   let userId = req.user.id;

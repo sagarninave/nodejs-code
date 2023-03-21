@@ -1,6 +1,7 @@
 const { message, statusCode } = require('../../constants');
 const User = require('../../schema/user.schema');
 
+/* This is a function that is used to get all the users from the database. */
 exports.getalluser = (req, res) => {
   User.find()
     .select('_id first_name last_name email username phone avatar address gender dob social role')
@@ -30,6 +31,7 @@ exports.getalluser = (req, res) => {
     });
 };
 
+/* This is a function that is used to get a single user from the database. */
 exports.getuser = (req, res) => {
   User.findById(req.params.id)
     .select('_id first_name last_name email username phone avatar address gender dob social role')

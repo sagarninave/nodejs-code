@@ -1,8 +1,10 @@
+/* This is a regular expression for email and password validation. */
 const regex = {
   EMAIL: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
   PASSWORD: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
 };
 
+/* This is a constant variable which is used to store all the messages which are used in the application. */
 const message = {
   SUCCESS: "Successful",
   FAILED: "Failed",
@@ -41,6 +43,7 @@ const message = {
   PROFILE_PHOTO_SIZE: "File size should not more than 1 MB"
 };
 
+/* This is a constant variable which is used to store all the status code which are used in the application. */
 const statusCode = {
   CONTINUE: 100,
   SWITCHING_PROTOCOLS: 101,

@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 
+/* Creating a transporter object that will be used to send emails. */
 const transporter = nodemailer.createTransport({
   service: process.env.EMAIL_SERVICE,
   auth: {
@@ -8,6 +9,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+/* This is the default mail options that will be used to send emails. */
 const mailOptions = {
   from: `Boilerplate ${process.env.EMAIL_USERNAME}`,
   to: '',
@@ -15,6 +17,11 @@ const mailOptions = {
   html: ''
 };
 
+/**
+ * It takes a mailConfig object as an argument, and then uses the nodemailer transporter to send the
+ * email
+ * @param mailConfig - This is the object that contains the email configuration.
+ */
 const sendEmail = (mailConfig) => {
   transporter.sendMail(mailConfig, function (error, info) {
     if (error) {

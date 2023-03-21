@@ -6,6 +6,7 @@ const passwordHash = require('password-hash');
 const jwt = require('jsonwebtoken');
 const User = require('../../schema/user.schema');
 
+/* This is a function that is used to check if a user exists or not. */
 exports.checkuserexists = (req, res) => {
 
   User.findOne({ email: req.params.email })
@@ -36,6 +37,7 @@ exports.checkuserexists = (req, res) => {
     });
 };
 
+/* This is a function that is used to register a user. */
 exports.signup = (req, res) => {
 
   let userId = new mongoose.Types.ObjectId();
@@ -100,6 +102,7 @@ exports.signup = (req, res) => {
     })
 };
 
+/* This is a function that is used to verify a user's email. */
 exports.verifyemail = (req, res) => {
 
   let userId = req.params.userId;
@@ -129,6 +132,7 @@ exports.verifyemail = (req, res) => {
     });
 };
 
+/* This is a function that is used to login a user. */
 exports.login = (req, res) => {
 
   let userEmail = req.body.email;
@@ -217,6 +221,7 @@ exports.login = (req, res) => {
     });
 };
 
+/* This is a function that is used to send a recent login email. */
 exports.recentloginemailsend = (req, res) => {
   let email = "sagarninave@gmail.com";
   let emailData = {

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+/* Creating a schema for the user model. */
 const userSchema = new Schema({
   _id: mongoose.Schema.Types.ObjectId,
   first_name: {type: String, required: true},

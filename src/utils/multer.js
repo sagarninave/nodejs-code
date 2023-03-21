@@ -1,6 +1,7 @@
 const path = require('path');
 const multer = require('multer');
 
+/* This is a multer middleware that is used to upload files. */
 exports.multer = multer({
   storage:  multer.diskStorage({}),
   fileFilter: (req, file, cb) => {

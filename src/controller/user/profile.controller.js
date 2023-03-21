@@ -1,6 +1,7 @@
 const { message, statusCode } = require('../../constants');
 const User = require('../../schema/user.schema');
 
+/* This is a function that is called when a user wants to view their profile. */
 exports.userprofile = (req, res) => {
   let userId = req.user.id;
   User.findById(userId)
@@ -31,6 +32,7 @@ exports.userprofile = (req, res) => {
     });
 };
 
+/* This is a function that is called when a user wants to edit their profile. */
 exports.edituserprofile = (req, res) => {
   let userId = req.user.id;
   let user = {
@@ -69,6 +71,7 @@ exports.edituserprofile = (req, res) => {
     });
 };
 
+/* This is a function that is called when a user wants to upload their profile picture. */
 exports.uploadprofilepicture = async (req, res) => {
 
   if (req.file.size > 1000000) {
