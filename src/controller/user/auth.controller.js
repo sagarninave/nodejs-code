@@ -35,6 +35,7 @@ exports.checkuserexists = (req, res) => {
       };
       res.status(statusCode.INTERNAL_SERVER_ERROR).json(errorResponse);
     });
+  console.log("🚀 ~ file: auth.controller.js:38 ~ req.params.email:", req.params.email)
 };
 
 /* This is a function that is used to register a user. */
