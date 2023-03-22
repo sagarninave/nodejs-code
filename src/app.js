@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 /* This is to enable swagger documentation for the API. */
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./config/swagger.json');
-app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 /* This is importing the routes. */
 const { dbbackup } = require('./config/mongoDB');
