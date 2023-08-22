@@ -1,0 +1,714 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API Documentation",
+    "version": "1.0.0",
+    "title": "Ganaraj-API"
+  },
+  "host": "localhost:8000",
+  "tags": [
+    {
+      "name": "Database Management",
+      "description": "Get local mongo database backup"
+    },
+    {
+      "name": "Open",
+      "description": "This API is used to send contact form, photogallery etc."
+    },
+    {
+      "name": "User Management",
+      "description": "User management APIs such as get user, get profile, edit profile, signup, signin etc"
+    },
+    {
+      "name": "Finance Management",
+      "description": ""
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/dbbackup": {
+      "get": {
+        "tags": [
+          "Database Management"
+        ],
+        "description": "Get local mongo database backup",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/open/contact": {
+      "post": {
+        "tags": [
+          "Open"
+        ],
+        "description": "Send contact data",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Contact",
+            "schema": {
+              "$ref": "#/definitions/contact"
+            }
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/signup": {
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Create user",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Signup user",
+            "schema": {
+              "$ref": "#/definitions/signup"
+            }
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/checkuserexists/{email}": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Check user exists",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "email",
+            "description": "Check user exists",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/verifyemail/{userId}": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Email verification",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "description": "User id for verification code",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/login": {
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Login user",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Login user",
+            "schema": {
+              "$ref": "#/definitions/login"
+            }
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/forgetpassword/{email}": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Send forget password link through email to set new password to user",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "email",
+            "description": "Email for forget password",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/setnewpassword": {
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Setting new password by forget password link",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Set new password",
+            "schema": {
+              "$ref": "#/definitions/setnewpassword"
+            }
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/changepassword": {
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Change password",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token for authenticated user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Change password",
+            "schema": {
+              "$ref": "#/definitions/changepassword"
+            }
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/getuser/{id}": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Get user details",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token for authenticated user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "description": "User ID for get user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/getalluser": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Get all users",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token for authenticated user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/userprofile/": {
+      "get": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "User profile",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "User Profile",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/uploadprofilepicture": {
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Upload user profile picture",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token for authenticated user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "formData",
+            "name": "profilepicture",
+            "description": "Get user profile picture",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/user/edituserprofile": {
+      "put": {
+        "tags": [
+          "User Management"
+        ],
+        "description": "Update user profile",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User Details to update",
+            "schema": {
+              "$ref": "#/definitions/edituserprofile"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "description": "Token for authenticated user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request is OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "contact": {
+      "required": [
+        "first_name",
+        "last_name",
+        "email",
+        "phone",
+        "message"
+      ],
+      "properties": {
+        "first_name": {
+          "type": "string",
+          "example": "Sagar"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Ninave"
+        },
+        "email": {
+          "type": "string",
+          "example": "sagarninave@gmail.com"
+        },
+        "phone": {
+          "type": "string",
+          "example": "9657445206"
+        },
+        "message": {
+          "type": "string",
+          "example": "Hello Sir! This is message."
+        }
+      }
+    },
+    "signup": {
+      "required": [
+        "first_name",
+        "last_name",
+        "avtar",
+        "email",
+        "username",
+        "password",
+        "phone",
+        "role",
+        "address",
+        "gender",
+        "dob",
+        "social",
+        "verified",
+        "created"
+      ],
+      "properties": {
+        "first_name": {
+          "type": "string",
+          "example": "Sagar"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Ninave"
+        }, 
+        "avatar": {
+          "type": "string",
+          "example": "https://assets.about.me/users/s/a/g/sagarninave_1560145999_17.jpg"
+        },
+        "email": {
+          "type": "string",
+          "example": "sagarninave@gmail.com"
+        },
+        "username": {
+          "type": "string",
+          "example": "sagarninave"
+        },
+        "password": {
+          "type": "string",
+          "example": "Password@123"
+        },
+        "phone": {
+          "type": "string",
+          "example": "9657445206"
+        },
+        "role": {
+          "type": "string",
+          "example": 3
+        },
+        "address": {
+          "type": "string",
+          "example": "timki, nagpur"
+        },
+        "gender": {
+          "type": "string",
+          "example": "male"
+        },
+        "dob": {
+          "type": "string",
+          "example": "08/06/1996"
+        },
+        "social": {
+          "type": "object",
+          "example": {
+            "facebook":"https://facebook.com/sagarninave1",
+            "twitter":"https://twitter.com/sagarninave1",
+            "instgram":"https://instgram.com/sagarninave1",
+            "linkedin":"https://linkedin.com/sagarninave1"
+          }
+        },
+        "verified": {
+          "type": "boolean",
+          "example": false
+        },
+        "created": {
+          "type": "string",
+          "example": "2020-12-23"
+        }
+      }
+    },
+    "login": {
+      "required": [
+        "email",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "sagarninave@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "Password@123"
+        }
+      }
+    },
+    "setnewpassword": {
+      "required": [
+        "email",
+        "code",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "sagarninave@gmail.com"
+        },
+        "code": {
+          "type": "string",
+          "example": "5ff8835a3238ab43d48f3214"
+        },
+        "password": {
+          "type": "string",
+          "example": "Password@123"
+        }
+      }
+    },
+    "changepassword": {
+      "required": [
+        "old_password",
+        "new_password",
+        "confirm_password"
+      ],
+      "properties": {
+        "old_password": {
+          "type": "string",
+          "example": "Password@123"
+        },
+        "new_password": {
+          "type": "string",
+          "example": "Pass@123"
+        },
+        "confirm_password": {
+          "type": "string",
+          "example": "Pass@123"
+        }
+      }
+    },
+    "edituserprofile": {
+      "required": [
+        "first_name",
+        "last_name",
+        "username",
+        "phone",
+        "address",
+        "gender",
+        "dob",
+        "social"
+      ],
+      "properties": {
+        "first_name": {
+          "type": "string",
+          "example": "Sagar1"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Ninave1"
+        },
+        "username": {
+          "type": "string",
+          "example": "sagarninave1"
+        },
+        "phone": {
+          "type": "string",
+          "example": "9096514816"
+        },
+        "address": {
+          "type": "string",
+          "example": "mumbai"
+        },
+        "gender": {
+          "type": "string",
+          "example": "male"
+        },
+        "dob": {
+          "type": "string",
+          "example": "1996-06-08"
+        },
+        "social": {
+          "type": "object",
+          "example": {
+            "facebook": "facebook.com/sagarninave1",
+            "instagram": "instagram.com/sagarninave1",
+            "linkedin": "linkedin.com/sagarninave1",
+            "twitter": "twitter.com/sagarninave1"
+          }
+        }
+      }
+    }
+  }
+}
